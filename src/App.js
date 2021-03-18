@@ -1,9 +1,8 @@
-import { Switch } from 'react-router-dom';
-import routes from './routes';
-import RouteWithSubRoutes from './common/RouteWithSubRoutes';
-import Header from './common/Header';
-import SideBar from './common/SideBar';
-
+import { Switch } from "react-router-dom";
+import routes from "./routes";
+import RouteWithSubRoutes from "./common/RouteWithSubRoutes";
+import Header from "./common/Header";
+import SideBar from "./common/SideBar";
 
 function App() {
   return (

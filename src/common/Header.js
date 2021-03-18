@@ -1,10 +1,9 @@
-import { Link, useLocation } from 'react-router-dom';
-import { Navbar, Nav } from 'react-bootstrap';
-import routes from '../routes';
-
+import { Link, useLocation } from "react-router-dom";
+import { Navbar, Nav } from "react-bootstrap";
+import routes from "../routes";
 
 function Header() {
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
   return (
     <Navbar
       bg="primary"
@@ -14,11 +13,7 @@ function Header() {
       collapseOnSelect
       expand="md"
     >
-      <Navbar.Brand
-        as={Link}
-        to="/"
-        className="col-md-3 col-lg-2 mr-0 px-3"
-      >
+      <Navbar.Brand as={Link} to="/" className="col-md-3 col-lg-2 mr-0 px-3">
         Retireup
       </Navbar.Brand>
       <Navbar.Toggle

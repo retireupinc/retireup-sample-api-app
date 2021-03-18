@@ -1,24 +1,23 @@
-import Dashboard from './Dashboard';
-import Analysis from './Analysis';
-import Investments from './Investments';
-
+import Dashboard from "./Dashboard";
+import Analysis from "./Analysis";
+import Investments from "./Investments";
 
 const routes = [
   {
-    path: '/',
-    label: 'Dashboard',
+    path: "/",
+    label: "Dashboard",
     component: Dashboard,
     exact: true,
   },
   {
-    path: '/analysis',
-    label: 'Analysis',
+    path: "/analysis",
+    label: "Analysis",
     component: Analysis,
     exact: true,
   },
   {
-    path: '/investments',
-    label: 'Investments',
+    path: "/investments",
+    label: "Investments",
     component: Investments,
     exact: true,
   },
