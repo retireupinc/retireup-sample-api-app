@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 import routes from "../routes";
+import { ReactComponent as Logo } from "../assets/logo_t118_RU_160x32_white.svg";
 
 function Header() {
   const { pathname } = useLocation();
@@ -13,8 +14,12 @@ function Header() {
       collapseOnSelect
       expand="md"
     >
-      <Navbar.Brand as={Link} to="/" className="col-md-3 col-lg-2 mr-0 px-3">
-        Retireup
+      <Navbar.Brand
+        as={Link}
+        to="/"
+        className="col-md-3 col-lg-2 mr-0 px-3 text-center"
+      >
+        <Logo width="160" height="32" />
       </Navbar.Brand>
       <Navbar.Toggle
         aria-controls="sidebarMenu"
