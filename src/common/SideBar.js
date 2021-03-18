@@ -8,10 +8,10 @@ function SideBar() {
     <nav className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
       <div className="sidebar-sticky pt-3">
         <Nav className="flex-column">
-          {routes.map(({ path, label }, i) => (
+          {routes.map(({ path, menuItemLabel }, i) => (
             <Nav.Item key={i}>
               <Nav.Link as={Link} to={path} active={pathname === path}>
-                {label}
+                {menuItemLabel}
               </Nav.Link>
             </Nav.Item>
           ))}

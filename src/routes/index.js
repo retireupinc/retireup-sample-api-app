@@ -5,19 +5,19 @@ import Investments from "./Investments";
 const routes = [
   {
     path: "/",
-    label: "Dashboard",
+    menuItemLabel: "Dashboard",
     component: Dashboard,
     exact: true,
   },
   {
     path: "/analysis",
-    label: "Analysis",
+    menuItemLabel: "Analysis",
     component: Analysis,
     exact: true,
   },
   {
     path: "/investments",
-    label: "Investments",
+    menuItemLabel: "Investments",
     component: Investments,
     exact: true,
   },

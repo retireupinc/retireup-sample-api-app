@@ -28,10 +28,10 @@ function Header() {
       />
       <Navbar.Collapse id="sidebarMenu">
         <Nav className="mr-auto d-md-none px-3">
-          {routes.map(({ path, label }, i) => (
+          {routes.map(({ path, menuItemLabel }, i) => (
             <Nav.Item key={i}>
               <Nav.Link as={Link} to={path} active={pathname === path}>
-                {label}
+                {menuItemLabel}
               </Nav.Link>
             </Nav.Item>
           ))}
