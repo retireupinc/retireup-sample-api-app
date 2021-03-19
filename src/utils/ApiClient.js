@@ -44,21 +44,43 @@ class ApiClient {
 
 const client = new ApiClient();
 
+// Fetches a household by id.
 export const fetchHouseholdById = async (householdId) => {
   const { data: household } = await client.get(`/api/household/${householdId}`);
   return { household };
 };
 
-export const fetchPlanById = async (planId, withOutcome = true) => {
+// Fetches a plan by plan id.
+// Set the householdId to include the household's information.
+// Set withOutcome to true to include the outcome's information.
+export const fetchPlanById = async ({
+  planId,
+  householdId,
+  withOutcome = true,
+}) => {
+  if (householdId) {
+    const promises = [
+      client.get(
+        `/api/plan/${planId}?withOutcome=${withOutcome ? "true" : "false"}`
+      ),
+      client.get(`/api/household/${householdId}`),
+    ];
+
+    const results = await Promise.all(promises);
+    return { household: results[1].data, plan: results[0].data };
+  }
+
   const { data: plan } = await client.get(
     `/api/plan/${planId}?withOutcome=${withOutcome ? "true" : "false"}`
   );
 
-  const { household } = await fetchHouseholdById(plan.household);
+  const { data: household } = await client.get(`/api/household/${householdId}`);
 
   return { household, plan };
 };
 
+// Fetches a plan by a tag name.
+// Set withOutcome to true to include the outcome's information.
 export const fetchPlanByTagName = async (tagName, withOutcome = true) => {
   const { data: households } = await client.get(
     `/api/households?includePlans=true&planTag=${encodeURIComponent(tagName)}`
@@ -69,14 +91,14 @@ export const fetchPlanByTagName = async (tagName, withOutcome = true) => {
     h.plans.forEach((p) => {
       if (p.tags.indexOf(tagName) > -1) {
         filteredHouseholds.push({
-          id: h.id,
+          householdId: h.id,
           planId: p.id,
         });
       }
     });
   });
 
-  return fetchPlanById(filteredHouseholds[0].planId, withOutcome);
+  return fetchPlanById({ ...filteredHouseholds[0], withOutcome });
 };
 
 export default client;
