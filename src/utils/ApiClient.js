@@ -46,4 +46,39 @@ class ApiClient {
 
 const client = new ApiClient();
 
+export const fetchHouseholdById = async (householdId) => {
+  const household = await client.get(`/api/household/${householdId}`);
+  return { household };
+};
+
+export const fetchPlanById = async (planId, withOutcome = true) => {
+  const plan = await client.get(
+    `/api/plan/${planId}?withOutcome=${withOutcome ? "true" : "false"}`
+  );
+
+  const { household } = await fetchHouseholdById(plan.household);
+
+  return { household, plan };
+};
+
+export const fetchPlanByTagName = async (tagName, withOutcome = true) => {
+  const households = await client.get(
+    `/api/households?includePlans=true&planTag=${encodeURIComponent(tagName)}`
+  );
+
+  const filteredHouseholds = [];
+  households.forEach((h) => {
+    h.plans.forEach((p) => {
+      if (p.tags.indexOf(tagName) > -1) {
+        filteredHouseholds.push({
+          id: h.id,
+          planId: p.id,
+        });
+      }
+    });
+  });
+
+  return fetchPlanById(filteredHouseholds[0].planId, withOutcome);
+};
+
 export default client;
