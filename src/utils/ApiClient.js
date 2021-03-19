@@ -31,14 +31,12 @@ class ApiClient {
     methods.forEach((method) => {
       this[method] = (path, { headers = {}, params, data } = {}) =>
         new Promise((resolve, reject) => {
-          getAccessToken()
-            .then((accessToken) => accessToken)
-            .then((accessToken) => {
-              headers.Authorization = `Bearer ${accessToken}`;
-              axios[method](formatUrl(path), { headers, params, data })
-                .then(resolve)
-                .catch(reject);
-            });
+          getAccessToken().then((accessToken) => {
+            headers.Authorization = `Bearer ${accessToken}`;
+            axios[method](formatUrl(path), { headers, params, data })
+              .then(resolve)
+              .catch(reject);
+          });
         });
     });
   }
@@ -47,12 +45,12 @@ class ApiClient {
 const client = new ApiClient();
 
 export const fetchHouseholdById = async (householdId) => {
-  const household = await client.get(`/api/household/${householdId}`);
+  const { data: household } = await client.get(`/api/household/${householdId}`);
   return { household };
 };
 
 export const fetchPlanById = async (planId, withOutcome = true) => {
-  const plan = await client.get(
+  const { data: plan } = await client.get(
     `/api/plan/${planId}?withOutcome=${withOutcome ? "true" : "false"}`
   );
 
@@ -62,7 +60,7 @@ export const fetchPlanById = async (planId, withOutcome = true) => {
 };
 
 export const fetchPlanByTagName = async (tagName, withOutcome = true) => {
-  const households = await client.get(
+  const { data: households } = await client.get(
     `/api/households?includePlans=true&planTag=${encodeURIComponent(tagName)}`
   );
 
