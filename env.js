@@ -6,8 +6,6 @@ require("dotenv-safe").config({
   allowEmptyValues: true,
 });
 
-const { NODE_ENV } = process.env;
-
 if (process.env.DEPLOYMENT_GROUP_NAME) {
   const [
     APPLICATION_NAME,
@@ -32,10 +30,10 @@ process.env.PORT =
   parseInt(process.env.SERVER_PORT || 80) +
   parseInt(process.env.NODE_APP_INSTANCE || 0);
 
-const { PROTOCOL, SUBDOMAIN, DOMAIN, SERVER_PORT } = process.env;
-const port = STAGE_NAME === "dev" ? SERVER_PORT : 80; // 80 here is a stand-in for the public port
+const { PROTOCOL, SUBDOMAIN, DOMAIN, PORT } = process.env;
+const port = STAGE_NAME === "dev" ? PORT : 80; // 80 here is a stand-in for the public port
 process.env.WEBSITE_URL = `${PROTOCOL}://${SUBDOMAIN}.${DOMAIN}${
-  port === "80" || (port === "443" && PROTOCOL === "https") ? "" : `:${port}`
+  port === 80 || (port === 443 && PROTOCOL === "https") ? "" : `:${port}`
 }`;
 
 // Setting a prop on env to undefined actually sets it as 'undefined'
@@ -44,7 +42,3 @@ Object.keys(process.env).forEach((key) => {
     delete process.env[key];
   }
 });
-
-// DON'T ADD NEW ENV VARS HERE, do it above, before the loop to fix undefineds
-
-module.exports = process.env;

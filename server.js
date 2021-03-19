@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("./env");
 const express = require("express");
 const { createProxyMiddleware } = require("http-proxy-middleware");
 const path = require("path");
@@ -6,9 +6,14 @@ const axios = require("axios");
 const { URLSearchParams } = require("url");
 const jwt = require("jsonwebtoken");
 
-const { SERVER_PORT, API_URL, API_SUB, API_KEY, API_SECRET } = process.env;
-const host = "localhost";
-const port = Number(SERVER_PORT) || 5000;
+const {
+  SERVER_PORT,
+  WEBSITE_URL,
+  API_URL,
+  API_SUB,
+  API_KEY,
+  API_SECRET,
+} = process.env;
 
 const app = express();
 
@@ -64,6 +69,6 @@ app.get("/token", (req, res, next) => {
 });
 
 // Start the Proxy
-app.listen(port, host, () => {
-  console.log(`Starting Proxy at ${host}:${port}`);
+app.listen(SERVER_PORT, () => {
+  console.log(`Starting website at ${WEBSITE_URL}`);
 });
