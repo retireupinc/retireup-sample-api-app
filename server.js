@@ -2,9 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const { createProxyMiddleware } = require("http-proxy-middleware");
 const path = require("path");
-const fetch = require("node-fetch");
+const axios = require("axios");
 const { URLSearchParams } = require("url");
-const jsonwebtoken = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 const { SERVER_PORT, API_URL, API_SUB, API_KEY, API_SECRET } = process.env;
 const host = "localhost";
@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
 });
 
 // Get access token for API requests
-app.get("/token", async (req, res, next) => {
+app.get("/token", (req, res, next) => {
   const jwtPayload = {
     iss: API_KEY,
     sub: API_SUB,
@@ -44,23 +44,23 @@ app.get("/token", async (req, res, next) => {
     ].join(","),
   };
 
-  const jwtAssertion = jsonwebtoken.sign(jwtPayload, API_SECRET);
+  const jwtAssertion = jwt.sign(jwtPayload, API_SECRET);
 
   const params = new URLSearchParams();
   params.append("grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer");
   params.append("assertion", jwtAssertion);
 
-  const response = await fetch(`${API_URL}/api/token`, {
-    body: params,
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Accept: "application/json",
-    },
-  });
-
-  const jwt = await response.json();
-  res.json(jwt);
+  axios
+    .post(`${API_URL}/api/token`, params, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Accept: "application/json",
+      },
+    })
+    .then(({ data }) => {
+      res.json(data);
+    })
+    .catch((err) => next(err));
 });
 
 // Start the Proxy
