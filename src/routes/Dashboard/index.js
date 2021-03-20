@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-// import styled from "styled-components";
 import _ from "lodash";
 import { fetchPlanByTagName } from "../../utils/ApiClient";
 import { calcTransitionRows } from "../../utils";
+import MainPageHeader from "../..//components/MainPageHeader";
 import IncomeGraph from "./IncomeGraph";
 
 const BOOMER_W_CASH = "BOOMER_W_CASH";
@@ -26,9 +26,7 @@ function Dashboard(props) {
   if (!household || !plan || !plan?.outcome) {
     return (
       <>
-        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h1 className="h2">Timeline</h1>
-        </div>
+        <MainPageHeader label="Timeline" />
       </>
     );
   }
@@ -140,9 +138,7 @@ function Dashboard(props) {
 
   return (
     <>
-      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 className="h2">Timeline</h1>
-      </div>
+      <MainPageHeader label="Timeline" />
       <IncomeGraph household={household} rows={rows} />
     </>
   );
