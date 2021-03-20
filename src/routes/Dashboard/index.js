@@ -12,7 +12,7 @@ const settings = {
   yearType: "allYears",
 };
 
-export function Dashboard(props) {
+function Dashboard(props) {
   const [household, setHousehold] = useState();
   const [plan, setPlan] = useState();
 
@@ -24,7 +24,13 @@ export function Dashboard(props) {
   }, []);
 
   if (!household || !plan || !plan?.outcome) {
-    return null;
+    return (
+      <>
+        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 className="h2">Timeline</h1>
+        </div>
+      </>
+    );
   }
 
   const { client, spouse } = household;
@@ -133,10 +139,12 @@ export function Dashboard(props) {
     settings.yearType === "allYears" ? allrows : calcTransitionRows(allrows);
 
   return (
-    <div>
-      <h1>Financial Plan Timeline</h1>
+    <>
+      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 className="h2">Timeline</h1>
+      </div>
       <IncomeGraph household={household} rows={rows} />
-    </div>
+    </>
   );
 }
 

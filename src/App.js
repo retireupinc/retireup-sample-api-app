@@ -11,7 +11,7 @@ function App() {
       <div className="container-fluid">
         <div className="row">
           <SideBar />
-          <main role="main" className="col-md-9 ml-sm-auto col-lg-10 p-4">
+          <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-md-4">
             <Switch>
               {routes.map((route, i) => (
                 <RouteWithSubRoutes key={i} {...route} />
