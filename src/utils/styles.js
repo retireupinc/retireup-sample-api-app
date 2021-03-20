@@ -30,34 +30,27 @@ export const spacing = {
 };
 
 export const colors = {
-  defaultbg: "", // never to be used this is set by pimco
-
-  tablebg: "#F2F4F7",
-  headerbg: "#F2F4F7",
-  bodybg: "white",
-  tooltipText: "#616263",
-
-  border: "#dcdee3",
-  inputBorder: "#8f9399",
-  divider: "#dcdee3",
-
   white: "#ffffff",
   black: "#272b34",
-  accent: "#0057b8",
-
-  primary: "#AEE6CB",
-  primaryDisabled: "#DCDEE3",
-  primaryActive: "#83E4C1",
-  primaryHover: "#83E4C1",
-  primaryFocus: "#83E4C1",
-
-  secondary: "#aee6cb",
-  secondaryDisabled: "#DCDEE3",
-  secondaryActive: "rgba(2, 45, 94, 0.05)",
-  secondaryHover: "rgba(2, 45, 94, 0.05)",
-
-  scrollBarTrack: "#f2f4f7",
-  scrollBarThumb: "#babec7",
+  primary: "#007bff",
+  secondary: "#868e96",
+  success: "#28a745",
+  danger: "#dc3545",
+  warning: "#ffc107",
+  info: "#17a2b8",
+  light: "#f8f9fa",
+  dark: "#343a40",
+  blue: "#007bff",
+  indingo: "#6610f2",
+  purple: "#6f42c1",
+  pink: "#e83e8c",
+  red: "#dc3545",
+  orange: "#fd7e14",
+  yellow: "#ffc107",
+  green: "#28a745",
+  teal: "#20c997",
+  cyan: "#17a2b8",
+  divider: "#dcdee3",
 };
 
 const pseudoClass = "::";

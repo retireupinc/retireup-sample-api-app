@@ -7,7 +7,7 @@ import IncomeGraph from "./IncomeGraph";
 
 const BOOMER_W_CASH = "BOOMER_W_CASH";
 
-const settings = {
+const pageConfig = {
   dollarType: "nominal",
   yearType: "allYears",
 };
@@ -70,7 +70,7 @@ function Dashboard(props) {
       (event.type === "retire" && !alreadyRetired[event.owner])
   );
 
-  const income = median.income[settings.dollarType];
+  const income = median.income[pageConfig.dollarType];
 
   const _rows = _.zipWith(
     income.assets,
@@ -134,7 +134,7 @@ function Dashboard(props) {
   });
 
   const rows =
-    settings.yearType === "allYears" ? allrows : calcTransitionRows(allrows);
+    pageConfig.yearType === "allYears" ? allrows : calcTransitionRows(allrows);
 
   return (
     <>

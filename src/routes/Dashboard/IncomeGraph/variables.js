@@ -1,15 +1,15 @@
+import { colors } from "../../../utils/styles";
+
 export const MIN_CHART_WIDTH = 520;
 export const YAXIS_WIDTH = 50;
 
 export const legendColors = {
-  income: "#90c1a9",
-  other: "#272b34",
-  ss: "#8f5cde",
-  pension: "#b32158",
-  annuity: "#FF6C00",
-  fundedPaychecks: "#0057b8",
-  projectedPaychecks: "#4c89cd",
-  assets: "#ffbc10",
+  income: colors.teal,
+  other: colors.black,
+  ss: colors.purple,
+  pension: colors.red,
+  annuity: colors.orange,
+  assets: colors.yellow,
 };
 
 export const margin = {
