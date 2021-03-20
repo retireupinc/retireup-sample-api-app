@@ -1,8 +1,6 @@
 import React, { useMemo } from "react";
-import { Popover, OverlayTrigger } from "react-bootstrap";
 import styled from "styled-components";
 import { font, spacing, screen } from "../../../utils/styles";
-import { StyledPopover } from "../../../components";
 import EachLegend from "./EachLegend";
 import { legendColors } from "./variables";
 
@@ -71,35 +69,7 @@ function Legend(props) {
       {hasPension && <EachLegend fill={legendColors.pension} label="Pension" />}
       {hasAnnuity && <EachLegend fill={legendColors.annuity} label="Annuity" />}
       {hasOther && <EachLegend fill={legendColors.other} label="Other" />}
-      {hasAssets && (
-        <OverlayTrigger
-          trigger={["hover", "focus"]}
-          placement={"top"}
-          overlay={
-            <StyledPopover id="popover-positioned">
-              <Popover.Content>
-                <p>
-                  Any required minimum distributions that are withdrawn in
-                  excess of the client's annual spending target are assumed to
-                  be reinvested. In some cases, if the client does not have
-                  enough in assets to fund an income allocation which produces
-                  funded income in the first years of retirement, the plan will
-                  start withdrawing assets from investments in the client's
-                  growth allocation. In these cases, we do not recommend that
-                  the client pursue the Income to Outcome strategy.
-                </p>
-              </Popover.Content>
-            </StyledPopover>
-          }
-        >
-          <div className="d-flex justify-content-between">
-            <EachLegend
-              fill={legendColors.assets}
-              label="RMDs or other investment income"
-            />
-          </div>
-        </OverlayTrigger>
-      )}
+      {hasAssets && <EachLegend fill={legendColors.assets} label="Assets" />}
     </LegendContainer>
   );
 }
