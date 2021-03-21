@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
+import { Spinner } from "react-bootstrap";
 import { fetchPlanByTagName } from "../../utils/ApiClient";
 import MainPageHeader from "../../components/MainPageHeader";
 import LoadingOverlay from "../../components/LoadingOverlay";
-import Spinner from "../../components/Spinner";
 import DashboardContext from "./DashboardContext";
 import IncomeGraph from "./IncomeGraph";
 import Toolbar from "./Toolbar";
@@ -45,7 +45,12 @@ function Dashboard(props) {
   }, []);
 
   if (!household || !plan || !plan?.outcome) {
-    return <MainPageHeader label="Timeline" />;
+    return (
+      <>
+        <MainPageHeader label="Timeline" />
+        <Spinner animation="border" variant="primary" />
+      </>
+    );
   }
 
   return (
@@ -67,11 +72,7 @@ function Dashboard(props) {
         />
         <IncomeGraph />
       </DashboardContext.Provider>
-      {fetchingStatus.isFetching && (
-        <LoadingOverlay roundBottom={true}>
-          <Spinner />
-        </LoadingOverlay>
-      )}
+      {fetchingStatus.isFetching && <LoadingOverlay roundBottom={true} />}
     </>
   );
 }
