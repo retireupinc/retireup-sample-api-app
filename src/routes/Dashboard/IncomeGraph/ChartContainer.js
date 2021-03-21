@@ -7,7 +7,7 @@ import Chart from "./Chart";
 import YAxis from "./YAxis";
 import { margin } from "./variables";
 
-const ChartContainer = styled.div`
+const Container = styled.div`
   display: flex;
   position: absolute;
   top: 0;
@@ -16,14 +16,14 @@ const ChartContainer = styled.div`
   left: 0;
 `;
 
-const ChartAreaContainer = styled.div`
+const AreaContainer = styled.div`
   overflow-x: auto;
   overflow-y: hidden;
   flex-grow: 1;
   height: 101.5%;
 `;
 
-const IncomeBar = React.memo(function IncomeBar(props) {
+const ChartContainer = React.memo(function ChartContainer(props) {
   const { household, size, rows } = props;
   const height = size.height - margin.top - margin.bottom;
 
@@ -41,9 +41,9 @@ const IncomeBar = React.memo(function IncomeBar(props) {
   const yScale = scaleLinear([min, max], [height, 0]);
 
   return (
-    <ChartContainer className="d-flex position-absolute">
+    <Container className="d-flex position-absolute">
       <YAxis size={size} yScale={yScale} yAxisTicks={yAxisTicks.slice(1)} />
-      <ChartAreaContainer>
+      <AreaContainer>
         <Chart
           household={household}
           size={size}
@@ -52,9 +52,9 @@ const IncomeBar = React.memo(function IncomeBar(props) {
           yScale={yScale}
           yAxisTicks={yAxisTicks}
         />
-      </ChartAreaContainer>
-    </ChartContainer>
+      </AreaContainer>
+    </Container>
   );
 });
 
-export default IncomeBar;
+export default ChartContainer;
