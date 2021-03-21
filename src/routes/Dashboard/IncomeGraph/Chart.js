@@ -48,16 +48,7 @@ function Chart(props) {
   const barWidth = xScale.bandwidth();
 
   const stk = stack()
-    .keys([
-      "other",
-      "annuity",
-      "pension",
-      "ss",
-      "income",
-      "initial",
-      "reload",
-      "assets",
-    ])
+    .keys(["other", "annuity", "pension", "ss", "income", "assets"])
     .order(stackOrderNone)
     .offset(stackOffsetNone);
 
@@ -134,8 +125,6 @@ function Chart(props) {
             const y4Value = min + layers[3][r.index][1];
             const y5Value = min + layers[4][r.index][1];
             const y6Value = min + layers[5][r.index][1];
-            const y7Value = min + layers[6][r.index][1];
-            const y8Value = min + layers[7][r.index][1];
 
             const y1 = Math.round(yScale(y1Value));
             const h1 = Math.round(yScale(y0Value)) - y1;
@@ -155,12 +144,6 @@ function Chart(props) {
             const y6 = Math.round(yScale(y6Value));
             const h6 = y5 - y6;
 
-            const y7 = Math.round(yScale(y7Value));
-            const h7 = y6 - y7;
-
-            const y8 = Math.round(yScale(y8Value));
-            const h8 = y7 - y8;
-
             const x = Math.round(xScale(r.year));
             return (
               <StackedBar
@@ -177,24 +160,10 @@ function Chart(props) {
                 bars={[
                   {
                     name: "assets",
-                    label: "RMDs",
-                    y: y8,
-                    h: h8,
-                    fill: legendColors.assets,
-                  },
-                  {
-                    name: "reload",
-                    label: "Projected income",
-                    y: y7,
-                    h: h7,
-                    fill: legendColors.projectedPaychecks,
-                  },
-                  {
-                    name: "initial",
-                    label: "Funded income",
+                    label: "Assets",
                     y: y6,
                     h: h6,
-                    fill: legendColors.fundedPaychecks,
+                    fill: legendColors.assets,
                   },
                   {
                     name: "income",
