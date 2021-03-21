@@ -6,7 +6,6 @@ import {
   DropdownButton,
   Dropdown,
 } from "react-bootstrap";
-import { fetchPlanByTagName } from "../../utils/ApiClient";
 import DashboardContext from "./DashboardContext";
 
 const examples = [
@@ -22,24 +21,14 @@ const yearTypeOptions = [
 ];
 
 function Toolbar(props) {
-  const {
-    toolbarOptions,
-    setToolbarOptions,
-    setHousehold,
-    setPlan,
-  } = useContext(DashboardContext);
+  const { toolbarOptions, setToolbarOptions, fetchPlan } = useContext(
+    DashboardContext
+  );
   const { example, yearType } = toolbarOptions;
 
   useEffect(() => {
-    fetchPlanByTagName(example)
-      .then(({ household, plan }) => {
-        setHousehold(household);
-        setPlan(plan);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [example, setPlan, setHousehold]);
+    fetchPlan(example);
+  }, [example, fetchPlan]);
 
   const currentExample = examples.find((e) => e.value === example);
 
