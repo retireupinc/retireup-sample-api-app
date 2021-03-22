@@ -69,7 +69,12 @@ function Legend(props) {
       {hasPension && <EachLegend fill={legendColors.pension} label="Pension" />}
       {hasAnnuity && <EachLegend fill={legendColors.annuity} label="Annuity" />}
       {hasOther && <EachLegend fill={legendColors.other} label="Other" />}
-      {hasAssets && <EachLegend fill={legendColors.assets} label="Assets" />}
+      {hasAssets && (
+        <EachLegend
+          fill={legendColors.assets}
+          label="RMDs or Other Investment Income"
+        />
+      )}
     </LegendContainer>
   );
 }

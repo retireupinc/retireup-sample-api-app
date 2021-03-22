@@ -160,7 +160,7 @@ function Chart(props) {
                 bars={[
                   {
                     name: "assets",
-                    label: "Assets",
+                    label: "RMDs",
                     y: y6,
                     h: h6,
                     fill: legendColors.assets,

@@ -19,7 +19,10 @@ const defaultFetchingStatus = {
 };
 
 function Dashboard(props) {
-  const [toolbarOptions, setToolbarOptions] = useState(defaultToolbarOptions);
+  const [toolbarOptions, setToolbarOptions] = useState({
+    ...defaultToolbarOptions,
+    defaults: { ...defaultToolbarOptions },
+  });
   const [household, setHousehold] = useState();
   const [plan, setPlan] = useState();
   const [fetchingStatus, setFetchingStatus] = useState(defaultFetchingStatus);

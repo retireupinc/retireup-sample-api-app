@@ -15,7 +15,7 @@ const TableViewContainer = styled.div`
 
 const TableContainer = styled.div`
   overflow: auto;
-  min-height: 261px;
+  min-height: 400px;
   .col-year {
     min-width: 45px;
     max-width: 45px;

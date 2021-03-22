@@ -26,6 +26,9 @@ const yearTypeOptions = [
   { name: "Transition Years", value: "real" },
 ];
 
+const isToolBarResetDisabled = ({ defaults, viewType, yearType }) =>
+  defaults.viewType === viewType && defaults.yearType === yearType;
+
 function Toolbar(props) {
   const { toolbarOptions, setToolbarOptions, fetchPlan } = useContext(
     DashboardContext
@@ -39,11 +42,13 @@ function Toolbar(props) {
   const currentExample = examples.find((e) => e.value === example);
 
   return (
-    <ButtonToolbar aria-label="Toolbar with button groups">
-      <ButtonGroup toggle className="mr-4">
+    <ButtonToolbar
+      aria-label="Toolbar with button groups"
+      className="btn-toolbar-vertical"
+    >
+      <ButtonGroup size="md" toggle className="mr-4">
         <DropdownButton
           as={ButtonGroup}
-          size="md"
           title={currentExample.name}
           onSelect={(value) => {
             setToolbarOptions({
@@ -70,7 +75,6 @@ function Toolbar(props) {
             type="radio"
             variant="outline-primary"
             name="viewType"
-            size="md"
             value={option.value}
             checked={viewType === option.value}
             onChange={(e) =>
@@ -91,7 +95,6 @@ function Toolbar(props) {
             type="radio"
             variant="outline-primary"
             name="yearType"
-            size="md"
             value={option.value}
             checked={yearType === option.value}
             onChange={(e) =>
@@ -109,12 +112,11 @@ function Toolbar(props) {
         <Button
           type="button"
           variant="secondary"
-          size="md"
+          disabled={isToolBarResetDisabled(toolbarOptions)}
           onClick={(e) =>
             setToolbarOptions({
               ...toolbarOptions,
-              viewType: "graph",
-              yearType: "allYears",
+              ...toolbarOptions.defaults,
             })
           }
         >
