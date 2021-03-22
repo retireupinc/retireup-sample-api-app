@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import {
   ButtonToolbar,
   ButtonGroup,
@@ -7,6 +7,7 @@ import {
   DropdownButton,
   Dropdown,
 } from "react-bootstrap";
+import useDidUpdateEffect from "../../hooks/useDidUpdateEffect";
 import DashboardContext from "./DashboardContext";
 
 const examples = [
@@ -35,7 +36,7 @@ function Toolbar(props) {
   );
   const { example, viewType, yearType } = toolbarOptions;
 
-  useEffect(() => {
+  useDidUpdateEffect(() => {
     fetchPlan(example);
   }, [example, fetchPlan]);
 
