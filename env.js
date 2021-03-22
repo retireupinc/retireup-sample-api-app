@@ -6,19 +6,9 @@ require("dotenv-safe").config({
   allowEmptyValues: true,
 });
 
-if (process.env.DEPLOYMENT_GROUP_NAME) {
-  const [
-    APPLICATION_NAME,
-    STAGE_NAME,
-  ] = process.env.DEPLOYMENT_GROUP_NAME.split("-");
-  process.env.APPLICATION_NAME = APPLICATION_NAME;
-  process.env.STAGE_NAME = STAGE_NAME;
-}
-
 process.env.APPLICATION_NAME = process.env.APPLICATION_NAME || "api-app";
 process.env.STAGE_NAME = process.env.STAGE_NAME || "dev";
 const { APPLICATION_NAME, STAGE_NAME } = process.env;
-process.env.DEPLOYMENT_GROUP_NAME = `${APPLICATION_NAME}-${STAGE_NAME}-api-app`;
 
 process.env.PROTOCOL =
   process.env.PROTOCOL || (STAGE_NAME === "dev" ? "http" : "https");
@@ -31,7 +21,7 @@ process.env.PORT =
   parseInt(process.env.NODE_APP_INSTANCE || 0);
 
 const { PROTOCOL, SUBDOMAIN, DOMAIN, PORT } = process.env;
-const port = STAGE_NAME === "dev" ? PORT : 80; // 80 here is a stand-in for the public port
+const port = STAGE_NAME === "dev" ? PORT : 80;
 process.env.WEBSITE_URL = `${PROTOCOL}://${SUBDOMAIN}.${DOMAIN}${
   port === 80 || (port === 443 && PROTOCOL === "https") ? "" : `:${port}`
 }`;
