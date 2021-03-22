@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import {
   ButtonToolbar,
   ButtonGroup,
+  Button,
   ToggleButton,
   DropdownButton,
   Dropdown,
@@ -15,6 +16,11 @@ const examples = [
   { name: "Ready To Retire", value: "READY_TO_RETIRE" },
 ];
 
+const viewTypeOptions = [
+  { name: "Graph", value: "graph" },
+  { name: "Table", value: "table" },
+];
+
 const yearTypeOptions = [
   { name: "All Years", value: "allYears" },
   { name: "Transition Years", value: "real" },
@@ -24,7 +30,7 @@ function Toolbar(props) {
   const { toolbarOptions, setToolbarOptions, fetchPlan } = useContext(
     DashboardContext
   );
-  const { example, yearType } = toolbarOptions;
+  const { example, viewType, yearType } = toolbarOptions;
 
   useEffect(() => {
     fetchPlan(example);
@@ -57,13 +63,34 @@ function Toolbar(props) {
           ))}
         </DropdownButton>
       </ButtonGroup>
-      <ButtonGroup toggle>
+      <ButtonGroup toggle className="mr-4">
+        {viewTypeOptions.map((option, idx) => (
+          <ToggleButton
+            key={idx}
+            type="radio"
+            variant="outline-primary"
+            name="viewType"
+            size="md"
+            value={option.value}
+            checked={viewType === option.value}
+            onChange={(e) =>
+              setToolbarOptions({
+                ...toolbarOptions,
+                viewType: e.currentTarget.value,
+              })
+            }
+          >
+            {option.name}
+          </ToggleButton>
+        ))}
+      </ButtonGroup>
+      <ButtonGroup toggle className="mr-4">
         {yearTypeOptions.map((option, idx) => (
           <ToggleButton
             key={idx}
             type="radio"
             variant="outline-primary"
-            name="radio"
+            name="yearType"
             size="md"
             value={option.value}
             checked={yearType === option.value}
@@ -77,6 +104,22 @@ function Toolbar(props) {
             {option.name}
           </ToggleButton>
         ))}
+      </ButtonGroup>
+      <ButtonGroup toggle>
+        <Button
+          type="button"
+          variant="secondary"
+          size="md"
+          onClick={(e) =>
+            setToolbarOptions({
+              ...toolbarOptions,
+              viewType: "graph",
+              yearType: "allYears",
+            })
+          }
+        >
+          Reset
+        </Button>
       </ButtonGroup>
     </ButtonToolbar>
   );

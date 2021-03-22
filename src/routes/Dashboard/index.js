@@ -5,11 +5,13 @@ import MainPageHeader from "../../components/MainPageHeader";
 import LoadingOverlay from "../../components/LoadingOverlay";
 import DashboardContext from "./DashboardContext";
 import IncomeGraph from "./IncomeGraph";
+import IncomeTable from "./IncomeTable";
 import Toolbar from "./Toolbar";
 
 const BOOMER_W_CASH = "BOOMER_W_CASH";
 const defaultToolbarOptions = {
   example: BOOMER_W_CASH,
+  viewType: "graph",
   yearType: "allYears",
 };
 const defaultFetchingStatus = {
@@ -70,7 +72,11 @@ function Dashboard(props) {
           label="Timeline"
           render={(props) => <Toolbar {...props} />}
         />
-        <IncomeGraph />
+        {toolbarOptions.viewType === "graph" ? (
+          <IncomeGraph />
+        ) : (
+          <IncomeTable />
+        )}
       </DashboardContext.Provider>
       {fetchingStatus.isFetching && <LoadingOverlay roundBottom={true} />}
     </>
