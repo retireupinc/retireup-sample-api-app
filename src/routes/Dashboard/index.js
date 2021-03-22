@@ -42,7 +42,7 @@ function Dashboard(props) {
 
   useEffect(() => {
     fetchPlan(BOOMER_W_CASH);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!household || !plan || !plan?.outcome) {
     return (
