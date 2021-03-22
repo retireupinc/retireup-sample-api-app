@@ -17,7 +17,7 @@ const useResizeObserver = (containerRef, onResize) => {
           const width = e.target.clientWidth;
           const height = e.target.clientHeight;
 
-          if (onResize == null) {
+          if (!onResize) {
             setSize({
               width,
               height,
@@ -36,28 +36,22 @@ const useResizeObserver = (containerRef, onResize) => {
   );
 
   React.useLayoutEffect(() => {
-    if (containerRef.current != null && ro == null) {
-      if (window.ResizeObserver) {
-        initResizeObserver(window.ResizeObserver);
-      } else {
-        import("resize-observer-polyfill").then((mod) => {
-          initResizeObserver(mod.default);
-        });
-      }
+    if (containerRef.current && !ro) {
+      initResizeObserver(window.ResizeObserver);
     }
     let node;
-    if (ro != null && containerRef.current != null) {
+    if (ro && containerRef.current) {
       node = containerRef.current;
       ro.observe(node);
     }
     return () => {
-      if (ro != null && ro.unobserve != null) {
+      if (ro && ro.unobserve) {
         ro.unobserve(node);
       }
     };
   }, [ro, initResizeObserver, containerRef]);
 
-  if (onResize == null) {
+  if (!onResize) {
     return size;
   }
 };
