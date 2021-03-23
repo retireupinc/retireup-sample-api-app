@@ -1,4 +1,4 @@
-import withMainRoute from "../components/WithMainRoute";
+import withPrivateRoute from "../components/WithPrivateRoute";
 import MainPageHeader from "../components/MainPageHeader";
 
 function Investments() {
@@ -10,4 +10,4 @@ function Investments() {
   );
 }
 
-export default withMainRoute(Investments);
+export default withPrivateRoute(Investments);

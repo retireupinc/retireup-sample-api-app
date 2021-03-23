@@ -4,8 +4,8 @@ import { authContext } from "../contexts/AuthContext";
 import Header from "./Header";
 import SideBar from "./SideBar";
 
-function withMainRoute(WrappedComponent) {
-  function WithMainRoute(route) {
+function withPrivateRoute(WrappedComponent) {
+  function WithPrivateRoute(route) {
     const { auth } = useContext(authContext);
     return (
       <Route
@@ -39,7 +39,7 @@ function withMainRoute(WrappedComponent) {
     );
   }
 
-  return WithMainRoute;
+  return WithPrivateRoute;
 }
 
-export default withMainRoute;
+export default withPrivateRoute;

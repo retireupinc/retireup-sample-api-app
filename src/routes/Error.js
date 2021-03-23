@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Alert } from "react-bootstrap";
 import { authContext } from "../contexts/AuthContext";
 import withGuestRoute from "../components/WithGuestRoute";
-import withMainRoute from "../components/WithMainRoute";
+import withPrivateRoute from "../components/WithPrivateRoute";
 
 function ErrorMessage() {
   return (
@@ -14,7 +14,7 @@ function ErrorMessage() {
 }
 
 const GuestRouteError = withGuestRoute(ErrorMessage);
-const MainRouteError = withMainRoute(ErrorMessage);
+const PrivateRouteError = withPrivateRoute(ErrorMessage);
 
 function Error(props) {
   const { auth } = useContext(authContext);
@@ -22,7 +22,7 @@ function Error(props) {
     return <GuestRouteError />;
   }
 
-  return <MainRouteError />;
+  return <PrivateRouteError />;
 }
 
 export default Error;

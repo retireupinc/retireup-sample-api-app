@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Spinner } from "react-bootstrap";
 import { fetchPlanByTagName } from "../../utils/ApiClient";
-import withMainRoute from "../../components/WithMainRoute";
+import withPrivateRoute from "../../components/WithPrivateRoute";
 import MainPageHeader from "../../components/MainPageHeader";
 import { LoadingOverlay } from "../../components/Styled";
 import DashboardContext from "./DashboardContext";
@@ -89,4 +89,4 @@ function Dashboard(props) {
   );
 }
 
-export default withMainRoute(Dashboard);
+export default withPrivateRoute(Dashboard);
