@@ -36,36 +36,55 @@ app.get("/", (req, res) => {
 
 // Get access token for API requests
 app.get("/token", (req, res, next) => {
-  const jwtPayload = {
-    iss: API_KEY,
-    sub: API_SUB,
-    aud: API_URL,
-    exp: Math.floor(Date.now() / 1000) + 60 * 2,
-    scope: [
-      "plan.read",
-      "plan.write",
-      "household.read",
-      "household.write",
-    ].join(","),
-  };
+  if (!API_KEY || !API_SECRET) {
+    // Requests an access token for the demo app
+    const params = new URLSearchParams();
+    params.append("sub", API_SUB);
 
-  const jwtAssertion = jwt.sign(jwtPayload, API_SECRET);
+    axios
+      .post(`${API_URL}/api/demo/token`, params, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Accept: "application/json",
+        },
+      })
+      .then(({ data }) => {
+        res.json(data);
+      })
+      .catch((err) => next(err));
+  } else {
+    // Requests an access token using your apps credentials
+    const jwtPayload = {
+      iss: API_KEY,
+      sub: API_SUB,
+      aud: API_URL,
+      exp: Math.floor(Date.now() / 1000) + 60 * 2,
+      scope: [
+        "plan.read",
+        "plan.write",
+        "household.read",
+        "household.write",
+      ].join(","),
+    };
 
-  const params = new URLSearchParams();
-  params.append("grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer");
-  params.append("assertion", jwtAssertion);
+    const jwtAssertion = jwt.sign(jwtPayload, API_SECRET);
 
-  axios
-    .post(`${API_URL}/api/token`, params, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Accept: "application/json",
-      },
-    })
-    .then(({ data }) => {
-      res.json(data);
-    })
-    .catch((err) => next(err));
+    const params = new URLSearchParams();
+    params.append("grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer");
+    params.append("assertion", jwtAssertion);
+
+    axios
+      .post(`${API_URL}/api/token`, params, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Accept: "application/json",
+        },
+      })
+      .then(({ data }) => {
+        res.json(data);
+      })
+      .catch((err) => next(err));
+  }
 });
 
 // Start the Proxy
