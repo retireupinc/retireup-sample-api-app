@@ -33,7 +33,7 @@ function Login() {
           type="text"
           name="name"
           placeholder="Enter name"
-          size="lg"
+          size="md"
           ref={register({ required: "Enter your name", maxLength: 20 })}
           isInvalid={!!errors.name}
         />
@@ -49,7 +49,7 @@ function Login() {
           type="email"
           name="email"
           placeholder="Enter email"
-          size="lg"
+          size="md"
           ref={register({
             required: "Enter your e-mail",
             pattern: {
@@ -65,7 +65,7 @@ function Login() {
           </Form.Control.Feedback>
         )}
       </Form.Group>
-      <Button type="submit" variant="primary" block size="lg">
+      <Button type="submit" variant="primary" block size="md">
         Sign in
       </Button>
     </Form>
