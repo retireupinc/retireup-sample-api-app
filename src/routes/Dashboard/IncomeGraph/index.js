@@ -9,7 +9,7 @@ import DashboardContext from "../DashboardContext";
 import Legend from "./Legend";
 import Chart from "./Chart";
 import YAxis from "./YAxis";
-import { margin } from "./variables";
+import { MARGIN } from "./constants";
 
 const GContainer = styled.div`
   height: 400px;
@@ -49,7 +49,7 @@ function IncomeGraph(props) {
   let chartYScale = 0;
   let chartYAxisTicks = [];
   if (size) {
-    const height = size.height - margin.top - margin.bottom;
+    const height = size.height - MARGIN.top - MARGIN.bottom;
     let chartMax = _.maxBy(rows, (d) => d.total).total;
     chartYAxisTicks = ticks(chartMin, chartMax, 5);
     const distance = tickStep(chartMin, chartMax, 5);

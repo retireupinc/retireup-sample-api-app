@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import styled from "styled-components";
 import { font, spacing, screen } from "../../../utils/styles";
 import EachLegend from "./EachLegend";
-import { legendColors } from "./variables";
+import { LEGEND_COLORS } from "./constants";
 
 export const LegendContainer = styled.div`
   display: flex;
@@ -64,14 +64,18 @@ function Legend(props) {
 
   return (
     <LegendContainer>
-      {hasIncome && <EachLegend fill={legendColors.income} label="Salary" />}
-      {hasSS && <EachLegend fill={legendColors.ss} label="Social Security" />}
-      {hasPension && <EachLegend fill={legendColors.pension} label="Pension" />}
-      {hasAnnuity && <EachLegend fill={legendColors.annuity} label="Annuity" />}
-      {hasOther && <EachLegend fill={legendColors.other} label="Other" />}
+      {hasIncome && <EachLegend fill={LEGEND_COLORS.income} label="Salary" />}
+      {hasSS && <EachLegend fill={LEGEND_COLORS.ss} label="Social Security" />}
+      {hasPension && (
+        <EachLegend fill={LEGEND_COLORS.pension} label="Pension" />
+      )}
+      {hasAnnuity && (
+        <EachLegend fill={LEGEND_COLORS.annuity} label="Annuity" />
+      )}
+      {hasOther && <EachLegend fill={LEGEND_COLORS.other} label="Other" />}
       {hasAssets && (
         <EachLegend
-          fill={legendColors.assets}
+          fill={LEGEND_COLORS.assets}
           label="RMDs or Other Investment Income"
         />
       )}

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { yTickFormatter } from "../../../utils/formatters";
-import { YAXIS_WIDTH, margin } from "./variables";
+import { YAXIS_WIDTH, MARGIN } from "./constants";
 
 const YAxisContainer = styled.div`
   width: ${YAXIS_WIDTH}px;
@@ -14,7 +14,7 @@ function YAxis(props) {
   return (
     <YAxisContainer>
       <svg width={YAXIS_WIDTH} height={size.height}>
-        <g transform={`translate(0.5, ${margin.top + 0.5})`}>
+        <g transform={`translate(0.5, ${MARGIN.top + 0.5})`}>
           {yAxisTicks.map((y, idx) => {
             return (
               <g key={idx}>

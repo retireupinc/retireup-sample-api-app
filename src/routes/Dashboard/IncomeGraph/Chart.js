@@ -9,10 +9,10 @@ import StackedBar from "./StackedBar";
 import {
   MIN_CHART_WIDTH,
   YAXIS_WIDTH,
-  margin,
-  list,
-  legendColors,
-} from "./variables";
+  MARGIN,
+  LIST,
+  LEGEND_COLORS,
+} from "./constants";
 
 const sortedRows = (rows) => {
   const noEventRows = [];
@@ -34,8 +34,8 @@ function Chart(props) {
   const { household, size, rows, min, yScale, yAxisTicks } = props;
 
   const fullWidth = Math.max(MIN_CHART_WIDTH, size.width - YAXIS_WIDTH - 0.5);
-  const height = size.height - margin.top - margin.bottom;
-  const width = fullWidth - margin.left - margin.right;
+  const height = size.height - MARGIN.top - MARGIN.bottom;
+  const width = fullWidth - MARGIN.left - MARGIN.right;
 
   const xs = rows.map((d) => d.year);
   const xAxisTicks = ticks(xs[0], _.last(xs), 7);
@@ -69,7 +69,7 @@ function Chart(props) {
     setStyles({ all: { opacity: "1.0", transition: "opacity 0.3s" } });
   };
 
-  const transform = `translate(${margin.left + 0.5}, ${margin.top + 0.5})`;
+  const transform = `translate(${MARGIN.left + 0.5}, ${MARGIN.top + 0.5})`;
 
   const memoizedRows = useMemo(() => sortedRows(rows), [rows]);
 
@@ -116,7 +116,7 @@ function Chart(props) {
             );
           })}
         </g>
-        <motion.g initial="enter" animate="visible" variants={list}>
+        <motion.g initial="enter" animate="visible" variants={LIST}>
           {memoizedRows.map((r) => {
             const y0Value = min + layers[0][r.index][0];
             const y1Value = min + layers[0][r.index][1];
@@ -163,42 +163,42 @@ function Chart(props) {
                     label: "RMDs",
                     y: y6,
                     h: h6,
-                    fill: legendColors.assets,
+                    fill: LEGEND_COLORS.assets,
                   },
                   {
                     name: "income",
                     label: "Salary",
                     y: y5,
                     h: h5,
-                    fill: legendColors.income,
+                    fill: LEGEND_COLORS.income,
                   },
                   {
                     name: "ss",
                     label: "Social Security",
                     y: y4,
                     h: h4,
-                    fill: legendColors.ss,
+                    fill: LEGEND_COLORS.ss,
                   },
                   {
                     name: "pension",
                     label: "Pension",
                     y: y3,
                     h: h3,
-                    fill: legendColors.pension,
+                    fill: LEGEND_COLORS.pension,
                   },
                   {
                     name: "annuity",
                     label: "Annuity",
                     y: y2,
                     h: h2,
-                    fill: legendColors.annuity,
+                    fill: LEGEND_COLORS.annuity,
                   },
                   {
                     name: "other",
                     label: "Other",
                     y: y1,
                     h: h1,
-                    fill: legendColors.other,
+                    fill: LEGEND_COLORS.other,
                   },
                 ]}
               />
