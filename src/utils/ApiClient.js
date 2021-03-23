@@ -1,42 +1,71 @@
 import axios from "axios";
+import { DEFAULT_USER_AUTH, USER_AUTH_LOCAL_STORAGE_KEY } from "../constants";
 
+// Supported API Http Methods
 const methods = ["get", "post", "put", "patch", "del"];
 
 const formatUrl = (path) => (path[0] !== "/" ? `/${path}` : path);
 
-let accessToken;
-let accessTokenExpiresAt;
-
-const getAccessToken = async () => {
-  if (!accessToken && window.localStorage.getItem("accessToken")) {
-    accessToken = window.localStorage.getItem("accessToken");
-    accessTokenExpiresAt = Number(
-      window.localStorage.getItem("accessTokenExpiresAt")
-    );
+// Gets the user auth info from the local storage.
+export const getStoredUserAuth = () => {
+  const authStr = window.localStorage.getItem(USER_AUTH_LOCAL_STORAGE_KEY);
+  if (authStr) {
+    const auth = JSON.parse(authStr);
+    if (Date.now() < auth.accessTokenExpiresAt) {
+      return {
+        ...auth,
+        isAuthenticated: true,
+      };
+    }
   }
 
-  if (!accessToken || (accessToken && Date.now() >= accessTokenExpiresAt)) {
-    const { data } = await axios.get("/token");
-    accessToken = data.access_token;
-    accessTokenExpiresAt = Number(data.expires_in) * 1000 + Date.now();
-    window.localStorage.setItem("accessToken", accessToken);
-    window.localStorage.setItem("accessTokenExpiresAt", accessTokenExpiresAt);
-  }
-
-  return accessToken;
+  return { ...DEFAULT_USER_AUTH };
 };
 
+// Makes HTTP request to fetch the new user auth info.
+export const getNewUserAuth = async ({ name, email }) => {
+  const { data } = await axios.get(`/token?sub=${encodeURIComponent(email)}`);
+  return {
+    name,
+    email,
+    accessToken: data.access_token,
+    accessTokenExpiresAt: Number(data.expires_in) * 1000 + Date.now(),
+    isAuthenticated: true,
+  };
+};
+
+// Forces user to login and request new user auth info.
+export const requestNewUserAuth = async () => {
+  window.localStorage.removeItem(USER_AUTH_LOCAL_STORAGE_KEY);
+  window.location.replace("/login");
+  return new Promise(() => {}).catch(() => {});
+};
+
+// Http client to make calls to the Retireup API.
 class ApiClient {
   constructor() {
     methods.forEach((method) => {
       this[method] = (path, { headers = {}, params, data } = {}) =>
         new Promise((resolve, reject) => {
-          getAccessToken().then((accessToken) => {
-            headers.Authorization = `Bearer ${accessToken}`;
-            axios[method](formatUrl(path), { headers, params, data })
-              .then(resolve)
-              .catch(reject);
-          });
+          if (path.startsWith("/api")) {
+            const auth = getStoredUserAuth();
+            if (!auth?.isAuthenticated) {
+              return requestNewUserAuth().then(resolve).catch(reject);
+            }
+
+            headers.Accept = "application/json";
+            headers.Authorization = `Bearer ${auth.accessToken}`;
+          }
+
+          axios[method](formatUrl(path), { headers, params, data })
+            .then(resolve)
+            .catch((err) => {
+              if (err.response?.status === 401) {
+                requestNewUserAuth().then(resolve).catch(reject);
+              } else {
+                reject(err);
+              }
+            });
         });
     });
   }
