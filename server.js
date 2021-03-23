@@ -36,10 +36,12 @@ app.get("/", (req, res) => {
 
 // Get access token for API requests
 app.get("/token", (req, res, next) => {
+  const sub = req.query?.sub || API_SUB;
+
   if (!API_KEY || !API_SECRET) {
     // Requests an access token for the demo app
     const params = new URLSearchParams();
-    params.append("sub", API_SUB);
+    params.append("sub", sub);
 
     axios
       .post(`${API_URL}/api/demo/token`, params, {
@@ -56,7 +58,7 @@ app.get("/token", (req, res, next) => {
     // Requests an access token using your apps credentials
     const jwtPayload = {
       iss: API_KEY,
-      sub: API_SUB,
+      sub,
       aud: API_URL,
       exp: Math.floor(Date.now() / 1000) + 60 * 2,
       scope: [
