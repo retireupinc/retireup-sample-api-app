@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { displayType } from "../../../utils";
 import { moneyFormatter } from "../../../utils/formatters";
 import { screen } from "../../../utils/styles";
-import { StyledPopover, PopupTitle } from "../../../components";
+import { StyledPopover, PopupTitle } from "../../../components/Styled";
 import TooltipRow from "./TooltipRow";
 import TooltipRowEvent from "./TooltipRowEvent";
 import Event from "./Event";

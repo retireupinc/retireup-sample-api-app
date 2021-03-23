@@ -1,7 +1,18 @@
+import { Popover } from "react-bootstrap";
 import styled from "styled-components";
-import { spacing, screen } from "../utils/styles";
+import { colors, font, spacing, screen } from "../utils/styles";
 
-const LoadingOverlay = styled.div`
+export const StyledPopover = styled(Popover)`
+  font-size: ${font.sizes.sm};
+`;
+
+export const PopupTitle = styled.div`
+  font-weight: bold;
+  color: ${colors.black};
+  margin-bottom: ${spacing.s2};
+`;
+
+export const LoadingOverlay = styled.div`
   position: absolute;
   top: -${spacing.s3};
   right: 0;
@@ -24,5 +35,3 @@ const LoadingOverlay = styled.div`
     left: -${spacing.s3};
   }
 `;
-
-export default LoadingOverlay;

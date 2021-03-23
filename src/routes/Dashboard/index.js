@@ -3,7 +3,7 @@ import { Spinner } from "react-bootstrap";
 import { fetchPlanByTagName } from "../../utils/ApiClient";
 import withMainLayout from "../../components/WithMainLayout";
 import MainPageHeader from "../../components/MainPageHeader";
-import LoadingOverlay from "../../components/LoadingOverlay";
+import { LoadingOverlay } from "../../components/Styled";
 import DashboardContext from "./DashboardContext";
 import IncomeGraph from "./IncomeGraph";
 import IncomeTable from "./IncomeTable";
