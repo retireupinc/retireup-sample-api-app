@@ -2,6 +2,7 @@ import Dashboard from "./Dashboard";
 import Analysis from "./Analysis";
 import Investments from "./Investments";
 import Login from "./Login";
+import Logout from "./Logout";
 
 const routes = [
   {
@@ -25,6 +26,12 @@ const routes = [
   {
     path: "/login",
     component: Login,
+    exact: true,
+  },
+  {
+    path: "/logout",
+    menuItemLabel: "Logout",
+    component: Logout,
     exact: true,
   },
 ];
