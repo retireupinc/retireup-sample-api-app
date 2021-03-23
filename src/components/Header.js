@@ -39,6 +39,13 @@ function Header() {
             ))}
         </Nav>
       </Navbar.Collapse>
+      <ul className="navbar-nav px-3 d-none d-md-block">
+        <Nav.Item as="li" className="text-nowrap">
+          <Nav.Link as={Link} to="/logout">
+            Logout
+          </Nav.Link>
+        </Nav.Item>
+      </ul>
     </Navbar>
   );
 }
