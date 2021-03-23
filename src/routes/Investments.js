@@ -1,4 +1,4 @@
-import withMainLayout from "../components/WithMainLayout";
+import withMainRoute from "../components/WithMainRoute";
 import MainPageHeader from "../components/MainPageHeader";
 
 function Investments() {
@@ -10,4 +10,4 @@ function Investments() {
   );
 }
 
-export default withMainLayout(Investments);
+export default withMainRoute(Investments);

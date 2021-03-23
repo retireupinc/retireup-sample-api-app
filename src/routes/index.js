@@ -3,6 +3,7 @@ import Analysis from "./Analysis";
 import Investments from "./Investments";
 import Login from "./Login";
 import Logout from "./Logout";
+import Error from "./Error";
 
 const routes = [
   {
@@ -33,6 +34,9 @@ const routes = [
     menuItemLabel: "Logout",
     component: Logout,
     exact: true,
+  },
+  {
+    component: Error,
   },
 ];
 

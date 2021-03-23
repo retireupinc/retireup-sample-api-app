@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { getNewUserAuth } from "../utils/ApiClient";
 import { authContext } from "../contexts/AuthContext";
-import withGuestLayout from "../components/WithGuestLayout";
+import withGuestRoute from "../components/WithGuestRoute";
 import { ReactComponent as Logo } from "../assets/logo_t118_RU_160x32_black.svg";
 
 const StyledForm = styled.form`
@@ -72,4 +72,4 @@ function Login() {
   );
 }
 
-export default withGuestLayout(Login);
+export default withGuestRoute(Login);

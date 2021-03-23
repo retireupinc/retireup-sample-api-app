@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { Spinner } from "react-bootstrap";
 import { authContext } from "../contexts/AuthContext";
-import withMainLayout from "../components/WithMainLayout";
+import withMainRoute from "../components/WithMainRoute";
 
 function Logout() {
   const { setUnauthStatus } = useContext(authContext);
@@ -20,4 +20,4 @@ function Logout() {
   );
 }
 
-export default withMainLayout(Logout);
+export default withMainRoute(Logout);
