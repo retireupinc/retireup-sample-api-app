@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Spinner } from "react-bootstrap";
 import { fetchPlanByTagName } from "../../utils/ApiClient";
+import withMainLayout from "../../components/WithMainLayout";
 import MainPageHeader from "../../components/MainPageHeader";
 import LoadingOverlay from "../../components/LoadingOverlay";
 import DashboardContext from "./DashboardContext";
@@ -53,7 +54,9 @@ function Dashboard(props) {
     return (
       <>
         <MainPageHeader label="Timeline" />
-        <Spinner animation="border" variant="primary" />
+        <Spinner animation="border" variant="primary" role="status">
+          <span className="sr-only">Loading...</span>
+        </Spinner>
       </>
     );
   }
@@ -86,4 +89,4 @@ function Dashboard(props) {
   );
 }
 
-export default Dashboard;
+export default withMainLayout(Dashboard);

@@ -1,12 +1,13 @@
+import withMainLayout from "../components/WithMainLayout";
+import MainPageHeader from "../components/MainPageHeader";
+
 function Investments() {
   return (
     <>
-      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 className="h2">Investments</h1>
-      </div>
+      <MainPageHeader label="Investments" />
       <div>Investments</div>
     </>
   );
 }
 
-export default Investments;
+export default withMainLayout(Investments);
