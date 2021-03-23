@@ -1,6 +1,7 @@
 import Dashboard from "./Dashboard";
 import Analysis from "./Analysis";
 import Investments from "./Investments";
+import Login from "./Login";
 
 const routes = [
   {
@@ -19,6 +20,11 @@ const routes = [
     path: "/investments",
     menuItemLabel: "Investments",
     component: Investments,
+    exact: true,
+  },
+  {
+    path: "/login",
+    component: Login,
     exact: true,
   },
 ];
