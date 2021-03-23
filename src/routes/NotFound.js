@@ -11,7 +11,7 @@ const StyledMainContainer = styled.div`
   margin: auto;
 `;
 
-function ErrorMessage(props) {
+function NotFoundContent(props) {
   const { auth } = useContext(authContext);
   return (
     <StyledMainContainer>
@@ -28,16 +28,16 @@ function ErrorMessage(props) {
   );
 }
 
-const GuestRouteError = withGuestRoute(ErrorMessage);
-const PrivateRouteError = withPrivateRoute(ErrorMessage);
+const GuestNotFound = withGuestRoute(NotFoundContent);
+const PrivateNotFound = withPrivateRoute(NotFoundContent);
 
-function Error(props) {
+function NotFound(props) {
   const { auth } = useContext(authContext);
   if (!auth?.isAuthenticated) {
-    return <GuestRouteError />;
+    return <GuestNotFound />;
   }
 
-  return <PrivateRouteError />;
+  return <PrivateNotFound />;
 }
 
-export default Error;
+export default NotFound;

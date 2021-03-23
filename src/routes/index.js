@@ -3,7 +3,7 @@ import Analysis from "./Analysis";
 import Investments from "./Investments";
 import Login from "./Login";
 import Logout from "./Logout";
-import Error from "./Error";
+import NotFound from "./NotFound";
 
 const routes = [
   {
@@ -36,7 +36,7 @@ const routes = [
     exact: true,
   },
   {
-    component: Error,
+    component: NotFound,
   },
 ];
 
