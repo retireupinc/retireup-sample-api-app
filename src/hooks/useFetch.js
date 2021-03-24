@@ -1,17 +1,24 @@
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
-const useFetch = (promiseOrFunction, isImmediate = false, deps) => {
-  const didMountRef = useRef(isImmediate);
+const areAllDefined = (deps) =>
+  deps.every((i) => typeof i !== "undefined" && i !== null);
+
+const useFetch = (promiseOrFunction, deps = []) => {
+  if (!Array.isArray(deps)) {
+    throw new Error(`"deps" must be set to an array or undefined.`);
+  }
+
+  const shouldFetch = deps.length < 1 || areAllDefined(deps);
 
   const [state, setState] = useState({
     data: null,
     error: null,
-    isPending: isImmediate,
+    isPending: shouldFetch,
   });
 
   useEffect(() => {
     let isSubscribed = true;
-    if (isImmediate || didMountRef.current) {
+    if (shouldFetch) {
       if (!state.isPending) {
         setState({
           ...state,
@@ -33,8 +40,6 @@ const useFetch = (promiseOrFunction, isImmediate = false, deps) => {
         .catch((error) =>
           isSubscribed ? setState({ ...state, error, isPending: false }) : null
         );
-    } else {
-      didMountRef.current = true;
     }
 
     return () => (isSubscribed = false);

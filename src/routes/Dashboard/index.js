@@ -27,7 +27,6 @@ function Dashboard(props) {
   // Gets called on first render or when the "example" option changes
   const [householdData, householdError, isPending] = useFetch(
     () => fetchPlanByTagName(example),
-    true,
     [example]
   );
 

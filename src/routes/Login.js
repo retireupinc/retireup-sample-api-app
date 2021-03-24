@@ -48,7 +48,6 @@ function Login() {
   // Gets called when the form gets submitted
   const [authData, authError, isPending] = useFetch(
     () => getNewUserAuth(formData),
-    false,
     [formData]
   );
 
