@@ -1,18 +1,27 @@
 import { useContext, useMemo } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { authContext } from "../contexts/AuthContext";
-import { getLoginReturnUrl } from "../utils";
 
 function withGuestRoute(WrappedComponent) {
   function WithGuestRoute(route) {
     const { auth } = useContext(authContext);
     const currentUrl = window.location.href;
-    console.log(currentUrl);
-    const returnUrl = useMemo(() => getLoginReturnUrl(currentUrl), [
-      currentUrl,
-    ]);
+    const returnUrl = useMemo(() => {
+      const url = new URL(currentUrl);
+      const returnUrlParam = url.searchParams.get("returnUrl");
 
-    console.log(returnUrl);
+      const returnUrl = {
+        pathname: "/",
+      };
+
+      if (returnUrlParam) {
+        const returnUrlParts = new URL(returnUrlParam);
+        returnUrl.pathname = returnUrlParts.pathname;
+        returnUrl.search = returnUrlParts.search;
+      }
+
+      return returnUrl;
+    }, [currentUrl]);
 
     return (
       <Route
