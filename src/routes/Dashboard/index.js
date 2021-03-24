@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
-import { Spinner } from "react-bootstrap";
+import { useState } from "react";
+import { Alert, Spinner } from "react-bootstrap";
+import useFetch from "../../hooks/useFetch";
 import { fetchPlanByTagName } from "../../utils/ApiClient";
 import withPrivateRoute from "../../components/WithPrivateRoute";
 import MainPageHeader from "../../components/MainPageHeader";
@@ -9,14 +10,10 @@ import IncomeGraph from "./IncomeGraph";
 import IncomeTable from "./IncomeTable";
 import Toolbar from "./Toolbar";
 
-const BOOMER_W_CASH = "BOOMER_W_CASH";
 const defaultToolbarOptions = {
-  example: BOOMER_W_CASH,
+  example: "BOOMER_W_CASH",
   viewType: "graph",
   yearType: "allYears",
-};
-const defaultFetchingStatus = {
-  isFetching: false,
 };
 
 function Dashboard(props) {
@@ -24,39 +21,32 @@ function Dashboard(props) {
     ...defaultToolbarOptions,
     defaults: { ...defaultToolbarOptions },
   });
-  const [household, setHousehold] = useState();
-  const [plan, setPlan] = useState();
-  const [fetchingStatus, setFetchingStatus] = useState(defaultFetchingStatus);
 
-  const fetchPlan = useCallback(
-    (tagName) => {
-      setFetchingStatus({ isFetching: true });
-      fetchPlanByTagName(tagName)
-        .then(({ household, plan }) => {
-          setHousehold(household);
-          setPlan(plan);
-          setFetchingStatus({ isFetching: false });
-        })
-        .catch((err) => {
-          setFetchingStatus({ isFetching: false, err });
-          alert(err.message);
-          console.log(err);
-        });
-    },
-    [setHousehold, setPlan]
+  const { example, viewType } = toolbarOptions;
+
+  // Gets called on first render or when the "example" option changes
+  const [householdData, householdError, isPending] = useFetch(
+    () => fetchPlanByTagName(example),
+    true,
+    [example]
   );
 
-  useEffect(() => {
-    fetchPlan(BOOMER_W_CASH);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
+  const { household, plan } = householdData || {};
   if (!household || !plan || !plan?.outcome) {
     return (
       <>
+        {householdError && (
+          <Alert variant="danger" className="mt-4">
+            <Alert.Heading>Oh snap!</Alert.Heading>
+            <p>{householdError.error_description}</p>
+          </Alert>
+        )}
         <MainPageHeader label="Timeline" />
-        <Spinner animation="border" variant="primary" role="status">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
+        {isPending && (
+          <Spinner animation="border" variant="primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+        )}
       </>
     );
   }
@@ -68,23 +58,22 @@ function Dashboard(props) {
           toolbarOptions,
           household,
           plan,
-          setPlan,
-          setHousehold,
           setToolbarOptions,
-          fetchPlan,
         }}
       >
+        {householdError && (
+          <Alert variant="danger" className="mt-4">
+            <Alert.Heading>Oh snap!</Alert.Heading>
+            <p>{householdError.error_description}</p>
+          </Alert>
+        )}
         <MainPageHeader
           label="Timeline"
           render={(props) => <Toolbar {...props} />}
         />
-        {toolbarOptions.viewType === "graph" ? (
-          <IncomeGraph />
-        ) : (
-          <IncomeTable />
-        )}
+        {viewType === "graph" ? <IncomeGraph /> : <IncomeTable />}
       </DashboardContext.Provider>
-      {fetchingStatus.isFetching && <LoadingOverlay roundBottom={true} />}
+      {isPending && <LoadingOverlay roundBottom={true} />}
     </>
   );
 }

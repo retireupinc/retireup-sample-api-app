@@ -7,7 +7,6 @@ import {
   DropdownButton,
   Dropdown,
 } from "react-bootstrap";
-import useDidUpdateEffect from "../../hooks/useDidUpdateEffect";
 import DashboardContext from "./DashboardContext";
 
 const examples = [
@@ -31,15 +30,8 @@ const isToolBarResetDisabled = ({ defaults, viewType, yearType }) =>
   defaults.viewType === viewType && defaults.yearType === yearType;
 
 function Toolbar(props) {
-  const { toolbarOptions, setToolbarOptions, fetchPlan } = useContext(
-    DashboardContext
-  );
+  const { toolbarOptions, setToolbarOptions } = useContext(DashboardContext);
   const { example, viewType, yearType } = toolbarOptions;
-
-  useDidUpdateEffect(() => {
-    fetchPlan(example);
-  }, [example, fetchPlan]);
-
   const currentExample = examples.find((e) => e.value === example);
 
   return (

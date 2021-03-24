@@ -1,8 +1,10 @@
-import { useContext } from "react";
-import { Form, Button } from "react-bootstrap";
+import { useContext, useState } from "react";
+import { Form, Button, Alert } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { getNewUserAuth } from "../utils/ApiClient";
+import useFetch from "../hooks/useFetch";
+import useDidUpdateEffect from "../hooks/useDidUpdateEffect";
 import { authContext } from "../contexts/AuthContext";
 import withGuestRoute from "../components/WithGuestRoute";
 import { ReactComponent as Logo } from "../assets/logo_t118_RU_160x32_black.svg";
@@ -16,17 +18,37 @@ const StyledForm = styled.form`
 
 function Login() {
   const { setAuthStatus } = useContext(authContext);
-  const { register, handleSubmit, errors } = useForm();
-  const onSubmit = (data) => {
-    getNewUserAuth(data).then((auth) => {
-      setAuthStatus(auth);
-    });
-  };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const [formData, setFormData] = useState();
+
+  // Gets called when the form gets submitted
+  const [authData, authError, isPending] = useFetch(
+    () => getNewUserAuth(formData),
+    false,
+    [formData]
+  );
+
+  // Gets called after the auth request is done
+  useDidUpdateEffect(() => {
+    setAuthStatus(authData);
+  }, [authData, setAuthStatus]);
+
   return (
-    <Form as={StyledForm} onSubmit={handleSubmit(onSubmit)}>
+    <Form as={StyledForm} onSubmit={handleSubmit(setFormData)}>
       <div className="text-center mb-4">
         <Logo className="mb-4" width="320" height="64" />
       </div>
+      {authError && (
+        <Alert variant="danger" className="mt-4">
+          Login Failed. Please try again.
+        </Alert>
+      )}
       <Form.Group controlId="loginFormName">
         <Form.Label>Name</Form.Label>
         <Form.Control
@@ -65,7 +87,13 @@ function Login() {
           </Form.Control.Feedback>
         )}
       </Form.Group>
-      <Button type="submit" variant="primary" block size="md">
+      <Button
+        type="submit"
+        variant="primary"
+        block
+        size="md"
+        disabled={isPending}
+      >
         Sign in
       </Button>
     </Form>
