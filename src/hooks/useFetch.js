@@ -45,7 +45,8 @@ const useFetch = (promiseOrFunction, isImmediate = false, inputs) => {
               error_description:
                 typeof error.response?.data === "string"
                   ? error.response?.data
-                  : error.response?.data?.error_description,
+                  : error.response?.data?.error_description ??
+                    "The request failed.",
             },
             isPending: false,
           };
