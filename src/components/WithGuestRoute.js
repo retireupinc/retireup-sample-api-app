@@ -5,23 +5,23 @@ import { authContext } from "../contexts/AuthContext";
 function withGuestRoute(WrappedComponent) {
   function WithGuestRoute(route) {
     const { auth } = useContext(authContext);
-    const currentUrl = window.location.href;
+    const currentUrlStr = window.location.href;
     const returnUrl = useMemo(() => {
-      const url = new URL(currentUrl);
-      const returnUrlParam = url.searchParams.get("returnUrl");
+      const currentUrl = new URL(currentUrlStr);
+      const returnUrlParam = currentUrl.searchParams.get("returnUrl");
 
-      const returnUrl = {
+      const newReturnUrl = {
         pathname: "/",
       };
 
       if (returnUrlParam) {
-        const returnUrlParts = new URL(returnUrlParam);
-        returnUrl.pathname = returnUrlParts.pathname;
-        returnUrl.search = returnUrlParts.search;
+        const returnUrl = new URL(returnUrlParam);
+        newReturnUrl.pathname = returnUrl.pathname;
+        newReturnUrl.search = returnUrl.search;
       }
 
-      return returnUrl;
-    }, [currentUrl]);
+      return newReturnUrl;
+    }, [currentUrlStr]);
 
     return (
       <Route

@@ -7,19 +7,25 @@ import SideBar from "./SideBar";
 function withPrivateRoute(WrappedComponent) {
   function WithPrivateRoute(route) {
     const { auth } = useContext(authContext);
-    const currentUrl = window.location.href;
+    const currentUrlStr = window.location.href;
     const returnUrl = useMemo(() => {
-      const url = new URL(currentUrl);
-      const returnUrl = {
+      const currentUrl = new URL(currentUrlStr);
+      const newReturnUrl = {
         pathname: "/login",
       };
 
-      if (!url.pathname.startsWith("/logout")) {
-        returnUrl.search = `?returnUrl=${encodeURIComponent(currentUrl)}`;
+      // Only set the return url if the login pathname does not have a query string
+      // and we're also not currently in the logout pathname.
+      if (
+        currentUrl.pathname !== "/" &&
+        currentUrl.pathname !== "/logout" &&
+        !currentUrl.query
+      ) {
+        newReturnUrl.search = `?returnUrl=${encodeURIComponent(currentUrlStr)}`;
       }
 
-      return returnUrl;
-    }, [currentUrl]);
+      return newReturnUrl;
+    }, [currentUrlStr]);
 
     return (
       <Route
