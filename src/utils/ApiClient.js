@@ -6,49 +6,13 @@ const methods = ["get", "post", "put", "patch", "del"];
 
 const formatUrl = (path) => (path[0] !== "/" ? `/${path}` : path);
 
-// Gets the user auth info from the local storage.
-export const getStoredUserAuth = () => {
-  const authStr = window.localStorage.getItem(USER_AUTH_LOCAL_STORAGE_KEY);
-  if (authStr) {
-    const auth = JSON.parse(authStr);
-    if (Date.now() < auth.accessTokenExpiresAt) {
-      return {
-        ...auth,
-        isAuthenticated: true,
-      };
-    }
-  }
-
-  return { ...DEFAULT_USER_AUTH };
-};
-
-// Makes HTTP request to fetch the new user auth info.
-export const getNewUserAuth = async ({ name, email }) => {
-  const { data } = await axios.get(`/token?sub=${encodeURIComponent(email)}`);
-  return {
-    name,
-    email,
-    accessToken: data.access_token,
-    accessTokenExpiresAt: Number(data.expires_in) * 1000 + Date.now(),
-    isAuthenticated: true,
-  };
-};
-
-// Forces user to login and request new user auth info.
-export const requestNewUserAuth = async () => {
-  window.localStorage.removeItem(USER_AUTH_LOCAL_STORAGE_KEY);
-  window.location.replace(
-    `/login?returnUrl=${encodeURIComponent(window.location.href)}`
-  );
-  return new Promise(() => {}).catch(() => {});
-};
-
 // Http client to make calls to the Retireup API.
 class ApiClient {
   constructor() {
     methods.forEach((method) => {
       this[method] = (path, { headers = {}, params, data } = {}) =>
         new Promise((resolve, reject) => {
+          // Set Bearer token for all /api routes
           if (path.startsWith("/api")) {
             const auth = getStoredUserAuth();
             if (!auth?.isAuthenticated) {
@@ -74,6 +38,48 @@ class ApiClient {
 }
 
 const client = new ApiClient();
+
+// Gets the user auth info from the local storage.
+export const getStoredUserAuth = () => {
+  const authStr = window.localStorage.getItem(USER_AUTH_LOCAL_STORAGE_KEY);
+  if (authStr) {
+    const auth = JSON.parse(authStr);
+    if (Date.now() < auth.accessTokenExpiresAt) {
+      return {
+        ...auth,
+        isAuthenticated: true,
+      };
+    }
+  }
+
+  return { ...DEFAULT_USER_AUTH };
+};
+
+// Makes HTTP request to fetch the new user auth info.
+export const getNewUserAuth = async ({ name, email }) => {
+  const { data } = await client.get(`/token?sub=${encodeURIComponent(email)}`, {
+    headers: {
+      Accept: "application/json",
+    },
+  });
+
+  return {
+    name,
+    email,
+    accessToken: data.access_token,
+    accessTokenExpiresAt: Number(data.expires_in) * 1000 + Date.now(),
+    isAuthenticated: true,
+  };
+};
+
+// Forces user to login and request new user auth info.
+export const requestNewUserAuth = async () => {
+  window.localStorage.removeItem(USER_AUTH_LOCAL_STORAGE_KEY);
+  window.location.replace(
+    `/login?returnUrl=${encodeURIComponent(window.location.href)}`
+  );
+  return new Promise(() => {}).catch(() => {});
+};
 
 // Fetches a household by id.
 export const fetchHouseholdById = async (householdId) => {
