@@ -2,8 +2,6 @@ import { useContext } from "react";
 import { Alert } from "react-bootstrap";
 import styled from "styled-components";
 import { authContext } from "../contexts/AuthContext";
-import withGuestRoute from "../components/WithGuestRoute";
-import withPrivateRoute from "../components/WithPrivateRoute";
 
 const StyledMainContainer = styled.div`
   width: 100%;
@@ -11,7 +9,7 @@ const StyledMainContainer = styled.div`
   margin: auto;
 `;
 
-function NotFoundContent(props) {
+function NotFound(props) {
   const { auth } = useContext(authContext);
   return (
     <StyledMainContainer>
@@ -26,18 +24,6 @@ function NotFoundContent(props) {
       </Alert>
     </StyledMainContainer>
   );
-}
-
-const GuestNotFound = withGuestRoute(NotFoundContent);
-const PrivateNotFound = withPrivateRoute(NotFoundContent);
-
-function NotFound(props) {
-  const { auth } = useContext(authContext);
-  if (!auth?.isAuthenticated) {
-    return <GuestNotFound />;
-  }
-
-  return <PrivateNotFound />;
 }
 
 export default NotFound;
