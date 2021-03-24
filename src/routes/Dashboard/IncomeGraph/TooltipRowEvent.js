@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { displayInitials } from "../../../utils";
+import { displayInitials } from "../../../utils/formatters";
 import EachLegend from "./EachLegend";
 
 const hasName = (person, owner) =>

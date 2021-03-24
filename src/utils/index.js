@@ -1,50 +1,5 @@
 import _ from "lodash";
 
-export const displayName = (firstName, lastName) => {
-  if (_.isEmpty(firstName)) {
-    return lastName;
-  }
-
-  return `${firstName} ${lastName}`;
-};
-
-export const displayNamePossesive = (o) => {
-  const heading = _.isEmpty(o.firstName) ? o.lastName : `${o.firstName}`;
-  return `${heading}'s`;
-};
-
-export const displayInitials = (o) => {
-  if (_.isEmpty(o.firstName)) {
-    return o.lastName.charAt(0).toUpperCase();
-  }
-
-  return (o.firstName.charAt(0) + o.lastName.charAt(0)).toUpperCase();
-};
-
-export const displayNameFromPerson = (person) => {
-  if (_.isEmpty(person.firstName)) {
-    return person.lastName;
-  }
-
-  return `${person.firstName} ${person.lastName}`;
-};
-
-export const displayType = (type) => {
-  switch (type) {
-    case "retire": {
-      return "R";
-    }
-    case "ss": {
-      return "S";
-    }
-    case "end": {
-      return "E";
-    }
-    default:
-      return "N/A";
-  }
-};
-
 export const calcTransitionRows = (allRows) => {
   let start;
   let end;
