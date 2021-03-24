@@ -97,7 +97,11 @@ export const getStoredUserAuth = () => {
 };
 
 // Makes HTTP request to fetch the new user auth info.
-export const getNewUserAuth = async ({ name, email }) => {
+export const getNewUserAuth = async ({ name, email } = {}) => {
+  if (typeof name !== "string") {
+    throw new Error(`"name" mist be set to a string.`);
+  }
+
   const { data } = await client.get(`/token?sub=${encodeURIComponent(email)}`, {
     headers: {
       Accept: "application/json",
