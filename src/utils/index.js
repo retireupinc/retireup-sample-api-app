@@ -1,5 +1,35 @@
 import _ from "lodash";
 
+export const getLoginReturnUrl = (currentUrl) => {
+  const url = new URL(currentUrl);
+  const returnUrlParam = url.searchParams.get("returnUrl");
+
+  const returnUrl = {
+    pathname: "/",
+  };
+
+  if (returnUrlParam) {
+    const returnUrlParts = new URL(returnUrlParam);
+    returnUrl.pathname = returnUrlParts.pathname;
+    returnUrl.search = returnUrlParts.search;
+  }
+
+  return returnUrl;
+};
+
+export const getSessionTimeoutReturnUrl = (currentUrl) => {
+  const url = new URL(currentUrl);
+  const returnUrl = {
+    pathname: "/login",
+  };
+
+  if (!url.pathname.startsWith("/logout")) {
+    returnUrl.search = `?returnUrl=${encodeURIComponent(currentUrl)}`;
+  }
+
+  return returnUrl;
+};
+
 export const displayName = (firstName, lastName) => {
   if (_.isEmpty(firstName)) {
     return lastName;

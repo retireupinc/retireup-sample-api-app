@@ -1,12 +1,18 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { authContext } from "../contexts/AuthContext";
+import { getSessionTimeoutReturnUrl } from "../utils";
 import Header from "./Header";
 import SideBar from "./SideBar";
 
 function withPrivateRoute(WrappedComponent) {
   function WithPrivateRoute(route) {
     const { auth } = useContext(authContext);
+    const currentUrl = window.location.href;
+    const returnUrl = useMemo(() => getSessionTimeoutReturnUrl(currentUrl), [
+      currentUrl,
+    ]);
+
     return (
       <Route
         path={route.path}
@@ -27,12 +33,7 @@ function withPrivateRoute(WrappedComponent) {
               </div>
             </>
           ) : (
-            <Redirect
-              to={{
-                pathname: "/login",
-                state: { from: props.location },
-              }}
-            />
+            <Redirect to={returnUrl} />
           )
         }
       />

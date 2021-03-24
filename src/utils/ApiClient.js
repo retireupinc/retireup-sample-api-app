@@ -37,7 +37,9 @@ export const getNewUserAuth = async ({ name, email }) => {
 // Forces user to login and request new user auth info.
 export const requestNewUserAuth = async () => {
   window.localStorage.removeItem(USER_AUTH_LOCAL_STORAGE_KEY);
-  window.location.replace("/login");
+  window.location.replace(
+    `/login?returnUrl=${encodeURIComponent(window.location.href)}`
+  );
   return new Promise(() => {}).catch(() => {});
 };
 
