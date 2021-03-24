@@ -30,36 +30,13 @@ const useFetch = (promiseOrFunction, isImmediate = false, inputs) => {
             ? setState({ data, error: null, isPending: false })
             : null
         )
-        .catch((error) => {
-          if (!isSubscribed) {
-            return null;
-          }
-
-          const newState = {
-            ...state,
-            error: {
-              code: error.response?.status ?? 500,
-              error:
-                error.response?.data?.error_description ??
-                error.response?.statusText,
-              error_description:
-                typeof error.response?.data === "string"
-                  ? error.response?.data
-                  : error.response?.data?.error_description ??
-                    "The request failed.",
-            },
-            isPending: false,
-          };
-
-          if (error.response?.data?.errors) {
-            newState.error.errors = error.response.data.errors;
-          }
-
-          setState(newState);
-        });
+        .catch((error) =>
+          isSubscribed ? setState({ ...state, error, isPending: false }) : null
+        );
     } else {
       didMountRef.current = true;
     }
+
     return () => (isSubscribed = false);
   }, inputs); // eslint-disable-line react-hooks/exhaustive-deps
 

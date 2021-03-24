@@ -4,7 +4,28 @@ import { DEFAULT_USER_AUTH, USER_AUTH_LOCAL_STORAGE_KEY } from "../constants";
 // Supported API Http Methods
 const methods = ["get", "post", "put", "patch", "del"];
 
+// Prepends all paths with a "/"
 const formatUrl = (path) => (path[0] !== "/" ? `/${path}` : path);
+
+// Handles the Axios response error and returns a normalized Error object.
+const handleError = (originalError) => {
+  const error = new Error("The request failed.");
+  error.code = originalError.response?.status ?? 500;
+  error.error =
+    originalError.response?.data?.error_description ??
+    originalError.response?.statusTex;
+  error.error_description =
+    typeof originalError.response?.data === "string"
+      ? originalError.response?.data
+      : originalError.response?.data?.error_description ??
+        "The request failed.";
+
+  if (originalError.response?.data?.errors) {
+    error.errors = originalError.response.data.errors;
+  }
+
+  return error;
+};
 
 // Http client to make calls to the Retireup API.
 class ApiClient {
@@ -16,7 +37,11 @@ class ApiClient {
           if (path.startsWith("/api")) {
             const auth = getStoredUserAuth();
             if (!auth?.isAuthenticated) {
-              return requestNewUserAuth().then(resolve).catch(reject);
+              return requestNewUserAuth()
+                .then(resolve)
+                .catch((err) => {
+                  reject(handleError(err));
+                });
             }
 
             headers.Accept = "application/json";
@@ -25,9 +50,14 @@ class ApiClient {
 
           axios[method](formatUrl(path), { headers, params, data })
             .then(resolve)
-            .catch((err) => {
-              if (err.response?.status === 401) {
-                requestNewUserAuth().then(resolve).catch(reject);
+            .catch((originalError) => {
+              const err = handleError(originalError);
+              if (err.code === 401) {
+                requestNewUserAuth()
+                  .then(resolve)
+                  .catch((authErr) => {
+                    reject(handleError(authErr));
+                  });
               } else {
                 reject(err);
               }
