@@ -1,10 +1,10 @@
-import React from "react";
+import { useState, useCallback, useLayoutEffect } from "react";
 
 const useResizeObserver = (containerRef, onResize) => {
-  const [ro, setRO] = React.useState();
-  const [size, setSize] = React.useState();
+  const [ro, setRO] = useState();
+  const [size, setSize] = useState();
 
-  const initResizeObserver = React.useCallback(
+  const initResizeObserver = useCallback(
     (ResizeObserver) => {
       const ro = new ResizeObserver((entries) => {
         // https://stackoverflow.com/questions/49384120/resizeobserver-loop-limit-exceeded
@@ -30,20 +30,23 @@ const useResizeObserver = (containerRef, onResize) => {
           }
         });
       });
+
       setRO(ro);
     },
     [onResize]
   );
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     if (containerRef.current && !ro) {
       initResizeObserver(window.ResizeObserver);
     }
+
     let node;
     if (ro && containerRef.current) {
       node = containerRef.current;
       ro.observe(node);
     }
+
     return () => {
       if (ro && ro.unobserve) {
         ro.unobserve(node);

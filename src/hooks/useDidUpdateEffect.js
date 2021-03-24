@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 
-const useDidUpdateEffect = (fn, inputs) => {
+const useDidUpdateEffect = (fn, deps) => {
   const didMountRef = useRef(false);
 
   useEffect(() => {
@@ -9,7 +9,7 @@ const useDidUpdateEffect = (fn, inputs) => {
     } else {
       didMountRef.current = true;
     }
-  }, inputs); // eslint-disable-line react-hooks/exhaustive-deps
+  }, deps); // eslint-disable-line react-hooks/exhaustive-deps
 };
 
 export default useDidUpdateEffect;

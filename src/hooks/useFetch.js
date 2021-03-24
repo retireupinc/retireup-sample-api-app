@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 
-const useFetch = (promiseOrFunction, isImmediate = false, inputs) => {
+const useFetch = (promiseOrFunction, isImmediate = false, deps) => {
   const didMountRef = useRef(isImmediate);
 
   const [state, setState] = useState({
@@ -38,7 +38,7 @@ const useFetch = (promiseOrFunction, isImmediate = false, inputs) => {
     }
 
     return () => (isSubscribed = false);
-  }, inputs); // eslint-disable-line react-hooks/exhaustive-deps
+  }, deps); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { data, error, isPending } = state;
   return [data, error, isPending];
