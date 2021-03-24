@@ -81,7 +81,11 @@ export const getStoredUserAuth = () => {
     auth = JSON.parse(authStr);
   } catch (err) {}
 
-  if (!auth || auth.accessTokenExpiresAt <= Date.now()) {
+  if (
+    !auth ||
+    typeof auth !== "object" ||
+    auth.accessTokenExpiresAt <= Date.now()
+  ) {
     window.localStorage.removeItem(USER_AUTH_LOCAL_STORAGE_KEY);
     return { ...DEFAULT_USER_AUTH };
   }

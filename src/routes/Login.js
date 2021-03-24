@@ -54,7 +54,9 @@ function Login() {
 
   // Gets called after the auth request is done
   useDidUpdateEffect(() => {
-    setAuthStatus(authData);
+    if (authData) {
+      setAuthStatus(authData);
+    }
   }, [authData, setAuthStatus]);
 
   return (

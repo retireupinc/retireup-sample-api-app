@@ -4,6 +4,10 @@ import { DEFAULT_USER_AUTH, USER_AUTH_LOCAL_STORAGE_KEY } from "../constants";
 const useAuth = (initialState) => {
   const [auth, setAuth] = useState(initialState);
   const setAuthStatus = (userAuth) => {
+    if (!userAuth || typeof userAuth !== "object") {
+      throw new Error(`"userAuth" must be an object.`);
+    }
+
     window.localStorage.setItem(
       USER_AUTH_LOCAL_STORAGE_KEY,
       JSON.stringify(userAuth)
