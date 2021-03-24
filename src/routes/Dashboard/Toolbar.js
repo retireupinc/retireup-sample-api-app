@@ -110,6 +110,7 @@ function Toolbar(props) {
             setToolbarOptions({
               ...toolbarOptions,
               ...toolbarOptions.defaults,
+              example: toolbarOptions.example,
             })
           }
         >
