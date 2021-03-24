@@ -27,7 +27,7 @@ function withGuestRoute(WrappedComponent) {
       <Route
         path={route.path}
         render={(props) =>
-          auth.isAuthenticated ? (
+          auth?.isAuthenticated ? (
             <Redirect to={returnUrl} />
           ) : (
             <WrappedComponent {...props} routes={route.routes} />

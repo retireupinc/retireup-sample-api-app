@@ -14,6 +14,24 @@ const StyledForm = styled.form`
   max-width: 420px;
   padding: 15px;
   margin: auto;
+
+  .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+  }
+  input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  input[type="email"] {
+    margin-bottom: 20px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
 `;
 
 function Login() {
@@ -49,49 +67,41 @@ function Login() {
           Login Failed. Please try again.
         </Alert>
       )}
-      <Form.Group controlId="loginFormName">
-        <Form.Label>Name</Form.Label>
-        <Form.Control
-          type="text"
-          name="name"
-          placeholder="Enter name"
-          size="md"
-          ref={register({ required: "Enter your name", maxLength: 20 })}
-          isInvalid={!!errors.name}
-        />
-        {errors.name && (
-          <Form.Control.Feedback type="invalid">
-            {errors.name.message}
-          </Form.Control.Feedback>
-        )}
-      </Form.Group>
-      <Form.Group controlId="loginFormEmail">
-        <Form.Label>Email address</Form.Label>
-        <Form.Control
-          type="email"
-          name="email"
-          placeholder="Enter email"
-          size="md"
-          ref={register({
-            required: "Enter your e-mail",
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-              message: "Enter a valid e-mail address",
-            },
-          })}
-          isInvalid={!!errors.email}
-        />
-        {errors.email && (
-          <Form.Control.Feedback type="invalid">
-            {errors.email.message}
-          </Form.Control.Feedback>
-        )}
-      </Form.Group>
+      <Form.Label srOnly htmlFor="loginFormName">
+        Name
+      </Form.Label>
+      <Form.Control
+        id="loginFormName"
+        type="text"
+        name="name"
+        placeholder="Enter name"
+        size="lg"
+        ref={register({ required: "Enter your name", maxLength: 20 })}
+        isInvalid={!!errors.name}
+      />
+      <Form.Label srOnly htmlFor="loginFormEmail">
+        Email address
+      </Form.Label>
+      <Form.Control
+        id="loginFormEmail"
+        type="email"
+        name="email"
+        placeholder="Enter email"
+        size="lg"
+        ref={register({
+          required: "Enter your e-mail",
+          pattern: {
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+            message: "Enter a valid e-mail address",
+          },
+        })}
+        isInvalid={!!errors.email}
+      />
       <Button
         type="submit"
         variant="primary"
         block
-        size="md"
+        size="lg"
         disabled={isPending}
       >
         Sign in

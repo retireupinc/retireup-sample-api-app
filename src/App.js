@@ -37,7 +37,7 @@ function GuestLayout(props) {
 
 function App() {
   const { auth } = useContext(authContext);
-  return auth.isAuthenticated ? <PrivateLayout /> : <GuestLayout />;
+  return auth?.isAuthenticated ? <PrivateLayout /> : <GuestLayout />;
 }
 
 export default App;

@@ -29,7 +29,7 @@ function withPrivateRoute(WrappedComponent) {
       <Route
         path={route.path}
         render={(props) =>
-          auth.isAuthenticated ? (
+          auth?.isAuthenticated ? (
             <WrappedComponent {...props} routes={route.routes} />
           ) : (
             <Redirect to={returnUrl} />

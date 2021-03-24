@@ -72,17 +72,24 @@ const client = new ApiClient();
 // Gets the user auth info from the local storage.
 export const getStoredUserAuth = () => {
   const authStr = window.localStorage.getItem(USER_AUTH_LOCAL_STORAGE_KEY);
-  if (authStr) {
-    const auth = JSON.parse(authStr);
-    if (Date.now() < auth.accessTokenExpiresAt) {
-      return {
-        ...auth,
-        isAuthenticated: true,
-      };
-    }
+  if (!authStr) {
+    return { ...DEFAULT_USER_AUTH };
   }
 
-  return { ...DEFAULT_USER_AUTH };
+  let auth;
+  try {
+    auth = JSON.parse(authStr);
+  } catch (err) {}
+
+  if (!auth || auth.accessTokenExpiresAt <= Date.now()) {
+    window.localStorage.removeItem(USER_AUTH_LOCAL_STORAGE_KEY);
+    return { ...DEFAULT_USER_AUTH };
+  }
+
+  return {
+    ...auth,
+    isAuthenticated: true,
+  };
 };
 
 // Makes HTTP request to fetch the new user auth info.
