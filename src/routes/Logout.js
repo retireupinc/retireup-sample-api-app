@@ -8,7 +8,7 @@ function Logout() {
   useEffect(() => {
     setTimeout(() => {
       setUnauthStatus();
-    }, 1000);
+    }, 250);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
