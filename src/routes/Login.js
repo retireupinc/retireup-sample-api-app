@@ -85,7 +85,7 @@ function Login() {
       </Form.Label>
       <Form.Control
         id="loginFormEmail"
-        type="email"
+        type="text"
         name="email"
         placeholder="Enter email"
         size="lg"
