@@ -1,13 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
+import userAuthStorage from "./utils/userAuthStorage";
 import AuthContextProvider from "./contexts/AuthContext";
 import "./index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
-  <AuthContextProvider>
+  <AuthContextProvider userAuthStorage={userAuthStorage}>
     <BrowserRouter>
       <App />
     </BrowserRouter>

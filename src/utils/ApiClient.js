@@ -1,8 +1,5 @@
 import axios from "axios";
-import { DEFAULT_USER_AUTH, USER_AUTH_LOCAL_STORAGE_KEY } from "../constants";
-
-// Supported API Http Methods
-const methods = ["get", "post", "put", "patch", "del"];
+import userAuthStorage from "./userAuthStorage";
 
 // Prepends all paths with a "/"
 const formatUrl = (path) => (path[0] !== "/" ? `/${path}` : path);
@@ -29,72 +26,104 @@ const handleError = (originalError) => {
 
 // Http client to make calls to the Retireup API.
 class ApiClient {
-  constructor() {
-    methods.forEach((method) => {
-      this[method] = (path, { headers = {}, params, data } = {}) =>
-        new Promise((resolve, reject) => {
-          // Set Bearer token for all /api routes
-          if (path.startsWith("/api")) {
-            const auth = getStoredUserAuth();
-            if (!auth?.isAuthenticated) {
-              return requestNewUserAuth()
-                .then(resolve)
-                .catch((err) => {
-                  reject(handleError(err));
-                });
-            }
+  reconnectAttempted = false;
 
-            headers.Accept = "application/json";
-            headers.Authorization = `Bearer ${auth.accessToken}`;
-          }
+  async makeRequest(method, path, { headers = {}, params, data } = {}) {
+    try {
+      const res = await axios[method.toLowerCase()](formatUrl(path), {
+        headers,
+        params,
+        data,
+      });
 
-          axios[method](formatUrl(path), { headers, params, data })
-            .then(resolve)
-            .catch((originalError) => {
-              const err = handleError(originalError);
-              if (err.code === 401) {
-                requestNewUserAuth()
-                  .then(resolve)
-                  .catch((authErr) => {
-                    reject(handleError(authErr));
-                  });
-              } else {
-                reject(err);
-              }
-            });
-        });
+      return res;
+    } catch (err) {
+      throw handleError(err);
+    }
+  }
+
+  async makeAuthenticatedRequest(
+    method,
+    path,
+    { headers = {}, params, data } = {}
+  ) {
+    const auth = userAuthStorage.get();
+    if (!auth?.accessToken) {
+      return requestNewUserAuth();
+    }
+
+    headers.Accept = "application/json";
+    headers.Authorization = `Bearer ${auth.accessToken}`;
+
+    try {
+      const res = await this.makeRequest(method, path, {
+        headers,
+        params,
+        data,
+      });
+
+      return res;
+    } catch (err) {
+      if (err.code !== 401) {
+        throw err;
+      }
+
+      const res = await this.handleExpiredAccessToken(method, path, {
+        headers,
+        params,
+        data,
+      });
+
+      return res;
+    }
+  }
+
+  async handleExpiredAccessToken(
+    method,
+    path,
+    { headers = {}, params, data } = {}
+  ) {
+    // Already attempted to reconnect, redirect user to re-authenticate
+    if (this.reconnectAttempted) {
+      this.reconnectAttempted = false;
+      return requestNewUserAuth();
+    }
+
+    // Set to true to make sure we only try once
+    this.reconnectAttempted = true;
+
+    // Do we have existing expired auth data? if no, redirect user to re-authenticate.
+    const auth = userAuthStorage.get();
+    if (!auth?.accessToken) {
+      return requestNewUserAuth();
+    }
+
+    // Attempt to get a new access token
+    try {
+      const newUserAuth = await getNewUserAuth({
+        name: auth.name,
+        email: auth.email,
+      });
+
+      userAuthStorage.set(newUserAuth);
+
+      this.reconnectAttempted = false;
+    } catch (err) {
+      return requestNewUserAuth();
+    }
+
+    // Retry request
+    const res = await this.makeAuthenticatedRequest(method, path, {
+      headers,
+      params,
+      data,
     });
+
+    return res;
   }
 }
 
 const client = new ApiClient();
-
-// Gets the user auth info from the local storage.
-export const getStoredUserAuth = () => {
-  const authStr = window.localStorage.getItem(USER_AUTH_LOCAL_STORAGE_KEY);
-  if (!authStr) {
-    return { ...DEFAULT_USER_AUTH };
-  }
-
-  let auth;
-  try {
-    auth = JSON.parse(authStr);
-  } catch (err) {}
-
-  if (
-    !auth ||
-    typeof auth !== "object" ||
-    auth.accessTokenExpiresAt <= Date.now()
-  ) {
-    window.localStorage.removeItem(USER_AUTH_LOCAL_STORAGE_KEY);
-    return { ...DEFAULT_USER_AUTH };
-  }
-
-  return {
-    ...auth,
-    isAuthenticated: true,
-  };
-};
 
 // Makes HTTP request to fetch the new user auth info.
 export const getNewUserAuth = async ({ name, email } = {}) => {
@@ -102,11 +131,15 @@ export const getNewUserAuth = async ({ name, email } = {}) => {
     throw new Error(`"name" mist be set to a string.`);
   }
 
-  const { data } = await client.get(`/token?sub=${encodeURIComponent(email)}`, {
-    headers: {
-      Accept: "application/json",
-    },
-  });
+  const { data } = await client.makeRequest(
+    "get",
+    `/token?sub=${encodeURIComponent(email)}`,
+    {
+      headers: {
+        Accept: "application/json",
+      },
+    }
+  );
 
   return {
     name,
@@ -119,7 +152,6 @@ export const getNewUserAuth = async ({ name, email } = {}) => {
 
 // Forces user to login and request new user auth info.
 export const requestNewUserAuth = async () => {
-  window.localStorage.removeItem(USER_AUTH_LOCAL_STORAGE_KEY);
   window.location.replace(
     `/login?returnUrl=${encodeURIComponent(window.location.href)}`
   );
@@ -128,35 +160,26 @@ export const requestNewUserAuth = async () => {
 
 // Fetches a household by id.
 export const fetchHouseholdById = async (householdId) => {
-  const { data: household } = await client.get(`/api/household/${householdId}`);
+  const { data: household } = await client.makeAuthenticatedRequest(
+    "get",
+    `/api/household/${householdId}`
+  );
   return { household };
 };
 
 // Fetches a plan by plan id.
 // Set the householdId to include the household's information.
 // Set withOutcome to true to include the outcome's information.
-export const fetchPlanById = async ({
-  planId,
-  householdId,
-  withOutcome = true,
-}) => {
-  if (householdId) {
-    const promises = [
-      client.get(
-        `/api/plan/${planId}?withOutcome=${withOutcome ? "true" : "false"}`
-      ),
-      client.get(`/api/household/${householdId}`),
-    ];
-
-    const results = await Promise.all(promises);
-    return { household: results[1].data, plan: results[0].data };
-  }
-
-  const { data: plan } = await client.get(
+export const fetchPlanById = async ({ planId, withOutcome = true }) => {
+  const { data: plan } = await client.makeAuthenticatedRequest(
+    "get",
     `/api/plan/${planId}?withOutcome=${withOutcome ? "true" : "false"}`
   );
 
-  const { data: household } = await client.get(`/api/household/${householdId}`);
+  const { data: household } = await client.makeAuthenticatedRequest(
+    "get",
+    `/api/household/${plan.household}`
+  );
 
   return { household, plan };
 };
@@ -164,23 +187,23 @@ export const fetchPlanById = async ({
 // Fetches a plan by a tag name.
 // Set withOutcome to true to include the outcome's information.
 export const fetchPlanByTagName = async (tagName, withOutcome = true) => {
-  const { data: households } = await client.get(
+  const { data: households } = await client.makeAuthenticatedRequest(
+    "get",
     `/api/households?includePlans=true&planTag=${encodeURIComponent(tagName)}`
   );
 
-  const filteredHouseholds = [];
+  const filteredHouseholdPlans = [];
   households.forEach((h) => {
     h.plans.forEach((p) => {
       if (p.tags.indexOf(tagName) > -1) {
-        filteredHouseholds.push({
-          householdId: h.id,
+        filteredHouseholdPlans.push({
           planId: p.id,
         });
       }
     });
   });
 
-  return fetchPlanById({ ...filteredHouseholds[0], withOutcome });
+  return fetchPlanById({ ...filteredHouseholdPlans[0], withOutcome });
 };
 
 export default client;

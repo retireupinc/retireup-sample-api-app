@@ -1,18 +1,19 @@
 import { createContext } from "react";
 import useAuth from "../hooks/useAuth";
-import { DEFAULT_USER_AUTH } from "../constants";
-import { getStoredUserAuth } from "../utils/ApiClient";
 
 export const authContext = createContext({
-  auth: { ...DEFAULT_USER_AUTH },
+  auth: null,
   setAuthStatus: () => {},
   setUnauthStatus: () => {},
 });
 
 const { Provider } = authContext;
 
-const AuthProvider = ({ children }) => {
-  const { auth, setAuthStatus, setUnauthStatus } = useAuth(getStoredUserAuth());
+const AuthProvider = ({ userAuthStorage, children }) => {
+  const { auth, setAuthStatus, setUnauthStatus } = useAuth(
+    userAuthStorage.get(),
+    userAuthStorage
+  );
   return (
     <Provider value={{ auth, setAuthStatus, setUnauthStatus }}>
       {children}
