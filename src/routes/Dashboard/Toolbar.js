@@ -7,6 +7,8 @@ import {
   DropdownButton,
   Dropdown,
 } from "react-bootstrap";
+import styled from "styled-components";
+import { screen } from "../../utils/styles";
 import DashboardContext from "./DashboardContext";
 
 const examples = [
@@ -26,6 +28,10 @@ const yearTypeOptions = [
   { name: "Transition Years", value: "real" },
 ];
 
+export const StyledButtonGroup = styled(ButtonGroup)`
+  width: 100%;
+`;
+
 const isToolBarResetDisabled = ({ defaults, viewType, yearType }) =>
   defaults.viewType === viewType && defaults.yearType === yearType;
 
@@ -37,11 +43,11 @@ function Toolbar(props) {
   return (
     <ButtonToolbar
       aria-label="Toolbar with button groups"
-      className="btn-toolbar-vertical"
+      className="d-flex flex-column flex-sm-row"
     >
-      <ButtonGroup size="md" toggle className="mr-4">
+      <ButtonGroup toggle className="mb-2 ml-2 flex-grow-1">
         <DropdownButton
-          as={ButtonGroup}
+          as={StyledButtonGroup}
           title={currentExample.name}
           onSelect={(value) => {
             setToolbarOptions({
@@ -61,7 +67,7 @@ function Toolbar(props) {
           ))}
         </DropdownButton>
       </ButtonGroup>
-      <ButtonGroup toggle className="mr-4">
+      <ButtonGroup toggle className="mb-2 ml-2 flex-grow-1">
         {viewTypeOptions.map((option, idx) => (
           <ToggleButton
             key={idx}
@@ -81,7 +87,7 @@ function Toolbar(props) {
           </ToggleButton>
         ))}
       </ButtonGroup>
-      <ButtonGroup toggle className="mr-4">
+      <ButtonGroup toggle className="mb-2 ml-2 flex-grow-1">
         {yearTypeOptions.map((option, idx) => (
           <ToggleButton
             key={idx}
@@ -101,7 +107,7 @@ function Toolbar(props) {
           </ToggleButton>
         ))}
       </ButtonGroup>
-      <ButtonGroup toggle>
+      <ButtonGroup toggle className="mb-2 ml-2 flex-grow-1">
         <Button
           type="button"
           variant="secondary"
