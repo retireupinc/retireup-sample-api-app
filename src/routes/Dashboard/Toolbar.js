@@ -8,7 +8,6 @@ import {
   Dropdown,
 } from "react-bootstrap";
 import styled from "styled-components";
-import { screen } from "../../utils/styles";
 import DashboardContext from "./DashboardContext";
 
 const examples = [
