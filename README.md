@@ -1,10 +1,10 @@
 # Retireup Sample API App
 
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app). Then an Express server was added in the `server.js` file. The server is proxied via the `proxy` key in `package.json`.
+This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app) and uses an Express server as a proxy to the Retireup API.
 
 ## Using this project
 
-Clone the project, change into the directory and install the dependencies.
+Download or Clone the project then change into the directory and install the dependencies.
 
 ```bash
 git clone https://github.com/retireupinc/retireup-sample-api-app.git
