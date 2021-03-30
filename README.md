@@ -14,6 +14,7 @@ npm i
 ```
 
 Create a `.env` file for environment variables in your server.
+Copy the .env.sample -> .env as a starting point.
 
 You can start the server on its own with the command:
 
