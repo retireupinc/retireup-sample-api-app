@@ -17,7 +17,7 @@ const {
 
 const app = express();
 
-// Server static resources
+// Serves static resources
 app.use(express.static(path.join(__dirname, "build")));
 
 // Proxy API requests
@@ -29,7 +29,7 @@ app.use(
   })
 );
 
-// Server index.html production
+// Serves index.html production
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
