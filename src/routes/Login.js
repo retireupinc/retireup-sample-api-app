@@ -60,9 +60,14 @@ function Login() {
 
   return (
     <Form as={StyledForm} onSubmit={handleSubmit(setFormData)}>
-      <div className="text-center mb-4">
+      <div className="text-center mb-2">
         <Logo className="mb-4" width="320" height="64" />
       </div>
+      <Alert variant="info">
+        Please enter your name and email address. Just about any value will do
+        it!!! This information will only be used to group the data created for
+        your session.
+      </Alert>
       {authError && (
         <Alert variant="danger" className="mt-4">
           Login Failed. Please try again.
