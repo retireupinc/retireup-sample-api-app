@@ -65,8 +65,7 @@ function Login() {
       </div>
       <Alert variant="info">
         Please enter your name and email address. Just about any value will do
-        it!!! This information will only be used to group the data created for
-        your session.
+        it!!! This information will only be used to save and retrieve the clients and plans you create.
       </Alert>
       {authError && (
         <Alert variant="danger" className="mt-4">
@@ -110,7 +109,7 @@ function Login() {
         size="lg"
         disabled={isPending}
       >
-        Sign in
+        Start
       </Button>
     </Form>
   );
