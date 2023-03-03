@@ -34,4 +34,4 @@ Run both applications together with the command:
 npm run dev
 ```
 
-The React application will run on port 5000 and the server on port 5001.
+The React application will run on port 8000 and the server on port 8001.
