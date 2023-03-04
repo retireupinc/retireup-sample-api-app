@@ -1,10 +1,5 @@
-import { Popover } from "react-bootstrap";
 import styled from "styled-components";
-import { colors, font, spacing, screen } from "../utils/styles";
-
-export const StyledPopover = styled(Popover)`
-  font-size: ${font.sizes.sm};
-`;
+import { colors, screen, spacing } from "../utils/styles";
 
 export const PopupTitle = styled.div`
   font-weight: bold;

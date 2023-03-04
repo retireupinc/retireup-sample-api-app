@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { Alert, Spinner } from "react-bootstrap";
-import useFetch from "../../hooks/useFetch";
-import { fetchPlanByTagName } from "../../utils/ApiClient";
-import withPrivateRoute from "../../components/WithPrivateRoute";
+import { Alert, Spinner } from "reactstrap";
 import MainPageHeader from "../../components/MainPageHeader";
 import { LoadingOverlay } from "../../components/Styled";
+import useFetch from "../../hooks/useFetch";
+import { fetchPlanByTagName } from "../../utils/ApiClient";
 import DashboardContext from "./DashboardContext";
 import IncomeGraph from "./IncomeGraph";
 import IncomeTable from "./IncomeTable";
@@ -35,14 +34,14 @@ function Dashboard(props) {
     return (
       <>
         {householdError && (
-          <Alert variant="danger" className="mt-4">
-            <Alert.Heading>Oh snap!</Alert.Heading>
+          <Alert color="danger" className="mt-4">
+            <h4 className="alert-heading">Oh snap!</h4>
             <p>{householdError.error_description}</p>
           </Alert>
         )}
         <MainPageHeader label="Timeline" />
         {isPending && (
-          <Spinner animation="border" variant="primary" role="status">
+          <Spinner color="primary" role="status">
             <span className="sr-only">Loading...</span>
           </Spinner>
         )}
@@ -51,7 +50,7 @@ function Dashboard(props) {
   }
 
   return (
-    <>
+    <div className="page">
       <DashboardContext.Provider
         value={{
           toolbarOptions,
@@ -73,8 +72,8 @@ function Dashboard(props) {
         {viewType === "graph" ? <IncomeGraph /> : <IncomeTable />}
       </DashboardContext.Provider>
       {isPending && <LoadingOverlay roundBottom={true} />}
-    </>
+    </div>
   );
 }
 
-export default withPrivateRoute(Dashboard);
+export default Dashboard;

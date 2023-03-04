@@ -1,7 +1,13 @@
 import { useContext, useEffect } from "react";
-import { Spinner } from "react-bootstrap";
+import { Alert } from "reactstrap";
+import styled from "styled-components";
 import { authContext } from "../contexts/AuthContext";
-import withPrivateRoute from "../components/WithPrivateRoute";
+
+const StyledMainContainer = styled.div`
+  width: 100%;
+  padding: 15px;
+  margin: auto;
+`;
 
 function Logout() {
   const { setUnauthStatus } = useContext(authContext);
@@ -12,12 +18,19 @@ function Logout() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-      <Spinner animation="border" variant="primary" role="status">
-        <span className="sr-only">Please wait...</span>
-      </Spinner>
-    </div>
+    <StyledMainContainer>
+      <Alert color="danger">
+        <h4 className="alert-heading">Bye Bye!</h4>
+        <p>Logging out.</p>
+        <hr />
+        <p className="mb-0">
+          <a className="alert-link" href="/login">
+            Click here to logout
+          </a>
+        </p>
+      </Alert>
+    </StyledMainContainer>
   );
 }
 
-export default withPrivateRoute(Logout);
+export default Logout;

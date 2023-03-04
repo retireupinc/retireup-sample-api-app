@@ -1,12 +1,12 @@
 import { useContext } from "react";
 import {
-  ButtonToolbar,
-  ButtonGroup,
   Button,
-  ToggleButton,
-  DropdownButton,
-  Dropdown,
-} from "react-bootstrap";
+  ButtonGroup,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  UncontrolledDropdown,
+} from "reactstrap";
 import styled from "styled-components";
 import DashboardContext from "./DashboardContext";
 
@@ -40,76 +40,79 @@ function Toolbar(props) {
   const currentExample = examples.find((e) => e.value === example);
 
   return (
-    <ButtonToolbar
-      aria-label="Toolbar with button groups"
-      className="d-flex flex-column flex-sm-row"
-    >
-      <ButtonGroup toggle className="mb-2 ml-2 flex-grow-1">
-        <DropdownButton
-          as={StyledButtonGroup}
-          title={currentExample.name}
-          onSelect={(value) => {
-            setToolbarOptions({
-              ...toolbarOptions,
-              example: value,
-            });
-          }}
-        >
+    <div className="d-flex justify-content-center">
+      <UncontrolledDropdown className="me-1" direction="down">
+        <DropdownToggle caret color="primary">
+          {currentExample.name}
+        </DropdownToggle>
+        <DropdownMenu>
           {examples.map((option, idx) => (
-            <Dropdown.Item
+            <DropdownItem
               key={idx}
               eventKey={option.value}
               active={example === option.value}
+              onClick={() => {
+                setToolbarOptions({
+                  ...toolbarOptions,
+                  example: option.value,
+                });
+              }}
             >
               {option.name}
-            </Dropdown.Item>
+            </DropdownItem>
           ))}
-        </DropdownButton>
-      </ButtonGroup>
-      <ButtonGroup toggle className="mb-2 ml-2 flex-grow-1">
-        {viewTypeOptions.map((option, idx) => (
-          <ToggleButton
-            key={idx}
-            type="radio"
-            variant="outline-primary"
-            name="viewType"
-            value={option.value}
-            checked={viewType === option.value}
-            onChange={(e) =>
-              setToolbarOptions({
-                ...toolbarOptions,
-                viewType: e.currentTarget.value,
-              })
-            }
-          >
-            {option.name}
-          </ToggleButton>
-        ))}
-      </ButtonGroup>
-      <ButtonGroup toggle className="mb-2 ml-2 flex-grow-1">
-        {yearTypeOptions.map((option, idx) => (
-          <ToggleButton
-            key={idx}
-            type="radio"
-            variant="outline-primary"
-            name="yearType"
-            value={option.value}
-            checked={yearType === option.value}
-            onChange={(e) =>
-              setToolbarOptions({
-                ...toolbarOptions,
-                yearType: e.currentTarget.value,
-              })
-            }
-          >
-            {option.name}
-          </ToggleButton>
-        ))}
-      </ButtonGroup>
-      <ButtonGroup toggle className="mb-2 ml-2 flex-grow-1">
+        </DropdownMenu>
+      </UncontrolledDropdown>
+
+      <UncontrolledDropdown className="me-1" direction="down">
+        <DropdownToggle caret color="primary">
+          {currentExample.name}
+        </DropdownToggle>
+        <DropdownMenu>
+          {viewTypeOptions.map((option, idx) => (
+            <DropdownItem
+              key={idx}
+              eventKey={option.value}
+              active={viewType === option.value}
+              onClick={() => {
+                setToolbarOptions({
+                  ...toolbarOptions,
+                  viewType: option.value,
+                });
+              }}
+            >
+              {option.name}
+            </DropdownItem>
+          ))}
+        </DropdownMenu>
+      </UncontrolledDropdown>
+
+      <UncontrolledDropdown className="me-1" direction="down">
+        <DropdownToggle caret color="primary">
+          {currentExample.name}
+        </DropdownToggle>
+        <DropdownMenu>
+          {yearTypeOptions.map((option, idx) => (
+            <DropdownItem
+              key={idx}
+              active={yearType === option.value}
+              onClick={() => {
+                setToolbarOptions({
+                  ...toolbarOptions,
+                  yearType: option.value,
+                });
+              }}
+            >
+              {option.name}
+            </DropdownItem>
+          ))}
+        </DropdownMenu>
+      </UncontrolledDropdown>
+
+      <div className="me-1 dropdown">
         <Button
           type="button"
-          variant="secondary"
+          color="secondary"
           disabled={isToolBarResetDisabled(toolbarOptions)}
           onClick={(e) =>
             setToolbarOptions({
@@ -121,8 +124,8 @@ function Toolbar(props) {
         >
           Reset
         </Button>
-      </ButtonGroup>
-    </ButtonToolbar>
+      </div>
+    </div>
   );
 }
 

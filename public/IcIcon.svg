@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+ "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="401.000000pt" height="401.000000pt" viewBox="0 0 401.000000 401.000000"
+ preserveAspectRatio="xMidYMid meet" style="background-color: #fff">
+<title>InvestCloud</title>
+<metadata>
+Created by potrace 1.16, written by Peter Selinger 2001-2019
+</metadata>
+<g transform="translate(0.000000,401.000000) scale(0.100000,-0.100000)"
+fill="#2d496b" stroke="none">
+<path d="M0 2006 c0 -1129 4 -1997 9 -2000 5 -3 11 12 15 33 23 143 113 359
+213 510 111 167 321 349 516 447 101 51 258 101 377 120 81 13 141 15 270 10
+91 -3 181 -8 200 -12 l35 -5 29 83 c72 207 192 434 328 616 92 124 326 358
+448 449 247 182 503 306 785 378 205 52 341 68 573 68 l202 1 0 648 0 648
+-2000 0 -2000 0 0 -1994z"/>
+<path d="M3622 2419 c-677 -59 -1288 -472 -1589 -1074 -94 -187 -169 -431
+-193 -628 -7 -53 -14 -97 -15 -97 -1 0 -36 16 -77 34 -124 58 -208 77 -357 83
+-153 6 -233 -4 -361 -49 -208 -73 -387 -217 -498 -401 -43 -71 -99 -201 -107
+-249 l-7 -38 1791 0 1791 0 0 1204 c0 1139 -1 1205 -17 1210 -38 10 -263 14
+-361 5z"/>
+</g>
+</svg>

@@ -1,32 +1,38 @@
 import { useContext } from "react";
-import { Switch } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import RequireAuth from "./components/RequireAuth";
+import SideBar from "./components/SideBar";
 import { authContext } from "./contexts/AuthContext";
 import routes from "./routes";
-import Header from "./components/Header";
-import SideBar from "./components/SideBar";
 
 function renderRoutes() {
   return (
-    <Switch>
-      {routes.map((route, i) => (
-        <route.component key={i} {...route} />
-      ))}
-    </Switch>
+    <Routes>
+      {routes.map(({ path, Element, isPublic }, i) => {
+        if (isPublic) {
+          return <Route path={path} element={<Element />} />;
+        }
+
+        return (
+          <Route
+            path={path}
+            element={
+              <RequireAuth>
+                <Element />
+              </RequireAuth>
+            }
+          />
+        );
+      })}
+    </Routes>
   );
 }
 
 function PrivateLayout(props) {
   return (
     <>
-      <Header />
-      <div className="container-fluid">
-        <div className="row">
-          <SideBar />
-          <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-            {renderRoutes()}
-          </main>
-        </div>
-      </div>
+      <SideBar />
+      {renderRoutes()}
     </>
   );
 }

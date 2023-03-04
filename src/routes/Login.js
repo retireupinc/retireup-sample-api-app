@@ -1,34 +1,39 @@
 import { useContext, useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Alert, Button, Form, FormGroup, Input, Label } from "reactstrap";
 import styled from "styled-components";
-import { getNewUserAuth } from "../utils/ApiClient";
-import useFetch from "../hooks/useFetch";
-import useDidUpdateEffect from "../hooks/useDidUpdateEffect";
+import logo from "../assets/IcLogo.png";
 import { authContext } from "../contexts/AuthContext";
-import withGuestRoute from "../components/WithGuestRoute";
-import { ReactComponent as Logo } from "../assets/logo_t118_RU_160x32_black.svg";
+import useDidUpdateEffect from "../hooks/useDidUpdateEffect";
+import useFetch from "../hooks/useFetch";
+import { getNewUserAuth } from "../utils/ApiClient";
 
-const StyledForm = styled.form`
-  width: 100%;
-  max-width: 420px;
-  padding: 15px;
-  margin: auto;
+const StyledContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 2rem;
+`;
 
-  .form-control {
-    position: relative;
-    box-sizing: border-box;
-    height: auto;
-    padding: 10px;
-    font-size: 16px;
+const StyledFormContainer = styled.div`
+  .form-signin {
+    max-width: 400px;
+    padding: 15px;
   }
-  input[name="name"] {
+
+  .form-signin .form-floating:focus-within {
+    z-index: 2;
+  }
+
+  .form-signin input[name="name"] {
     margin-bottom: -1px;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
   }
-  input[name="email"] {
-    margin-bottom: 20px;
+
+  .form-signin input[name="email"] {
+    margin-bottom: 10px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
@@ -36,9 +41,13 @@ const StyledForm = styled.form`
 
 function Login() {
   const { setAuthStatus } = useContext(authContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  let from = location.state?.from?.pathname || "/";
 
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm();
@@ -55,64 +64,85 @@ function Login() {
   useDidUpdateEffect(() => {
     if (authData) {
       setAuthStatus(authData);
+      navigate(from, { replace: true });
     }
-  }, [authData, setAuthStatus]);
+  }, [from, navigate, authData, setAuthStatus]);
 
   return (
-    <Form as={StyledForm} onSubmit={handleSubmit(setFormData)}>
-      <div className="text-center mb-2">
-        <Logo className="mb-4" width="320" height="64" />
-      </div>
-      <Alert variant="info">
-        Please enter your name and email address. Just about any value will do
-        it!!! This information will only be used to save and retrieve the clients and plans you create.
-      </Alert>
-      {authError && (
-        <Alert variant="danger" className="mt-4">
-          Login Failed. Please try again.
-        </Alert>
-      )}
-      <Form.Label srOnly htmlFor="loginFormName">
-        Name
-      </Form.Label>
-      <Form.Control
-        id="loginFormName"
-        type="text"
-        name="name"
-        placeholder="Enter name"
-        size="lg"
-        ref={register({ required: "Enter your name", maxLength: 20 })}
-        isInvalid={!!errors.name}
-      />
-      <Form.Label srOnly htmlFor="loginFormEmail">
-        Email address
-      </Form.Label>
-      <Form.Control
-        id="loginFormEmail"
-        type="text"
-        name="email"
-        placeholder="Enter email"
-        size="lg"
-        ref={register({
-          required: "Enter your e-mail",
-          pattern: {
-            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-            message: "Enter a valid e-mail address",
-          },
-        })}
-        isInvalid={!!errors.email}
-      />
-      <Button
-        type="submit"
-        variant="primary"
-        block
-        size="lg"
-        disabled={isPending}
-      >
-        Start
-      </Button>
-    </Form>
+    <StyledContainer>
+      <StyledFormContainer>
+        <Form onSubmit={handleSubmit(setFormData)} className={"form-signin"}>
+          <div className="text-center mb-2">
+            <img src={logo} alt="InvestCloud" className="mb-4" height="70" />
+          </div>
+          <Alert color="info">
+            Please enter your name and email address. Just about any value will
+            do it!!! This information will only be used to save and retrieve the
+            clients and plans you create.
+          </Alert>
+          {authError && (
+            <Alert color="danger" className="mt-4">
+              Login Failed. Please try again.
+            </Alert>
+          )}
+          <FormGroup floating cssModule={{ "mb-3": "mb-0" }}>
+            <Controller
+              type="text"
+              name="name"
+              control={control}
+              rules={{
+                required: "Enter your name",
+                maxLength: 20,
+              }}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  id="loginFormName"
+                  placeholder="Name"
+                  bsSize="lg"
+                  invalid={!!errors.name}
+                />
+              )}
+            />
+            <Label htmlFor="loginFormName">Name</Label>
+          </FormGroup>
+          <FormGroup floating>
+            <Controller
+              type="text"
+              name="email"
+              control={control}
+              rules={{
+                required: "Enter your e-mail",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                  message: "Enter a valid e-mail address",
+                },
+              }}
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  id="loginFormEmail"
+                  placeholder="Email address"
+                  bsSize="lg"
+                  invalid={!!errors.email}
+                />
+              )}
+            />
+            <Label htmlFor="loginFormEmail">Email address</Label>
+          </FormGroup>
+          <Button
+            type="submit"
+            color="primary"
+            block
+            size="lg"
+            disabled={isPending}
+          >
+            Start
+          </Button>
+        </Form>
+      </StyledFormContainer>
+    </StyledContainer>
   );
 }
 
-export default withGuestRoute(Login);
+export default Login;
