@@ -3,12 +3,12 @@ import { colors } from "../../../utils/styles";
 function EachLegend(props) {
   const { fill, label, letter } = props;
   return (
-    <div className="d-flex align-items-center mr-1">
+    <div className="d-flex align-items-center me-1">
       <svg
         style={{ overflow: "visible" }}
         height={15}
         width={12}
-        className="mr-2"
+        className="me-2"
       >
         {letter ? (
           <>

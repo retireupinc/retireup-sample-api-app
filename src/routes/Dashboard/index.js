@@ -40,11 +40,7 @@ function Dashboard(props) {
           </Alert>
         )}
         <MainPageHeader label="Timeline" />
-        {isPending && (
-          <Spinner color="primary" role="status">
-            <span className="sr-only">Loading...</span>
-          </Spinner>
-        )}
+        {isPending && <Spinner color="primary" role="status" />}
       </>
     );
   }

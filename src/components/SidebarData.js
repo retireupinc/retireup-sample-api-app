@@ -12,7 +12,7 @@ export const SidebarData = [
     path: "/investments",
   },
   {
-    title: "LogOut",
+    title: "Log Out",
     path: "/logout",
   },
 ];

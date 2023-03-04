@@ -52,7 +52,6 @@ function Toolbar(props) {
           {examples.map((option, idx) => (
             <DropdownItem
               key={idx}
-              eventKey={option.value}
               active={example === option.value}
               onClick={() => {
                 setToolbarOptions({
@@ -113,7 +112,7 @@ function Toolbar(props) {
         </DropdownMenu>
       </UncontrolledDropdown>
 
-      <div className="me-1 dropdown">
+      <div className="me-1 ">
         <Button
           type="button"
           color="secondary"

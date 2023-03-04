@@ -10,11 +10,12 @@ function renderRoutes() {
     <Routes>
       {routes.map(({ path, Element, isPublic }, i) => {
         if (isPublic) {
-          return <Route path={path} element={<Element />} />;
+          return <Route key={i} path={path} element={<Element />} />;
         }
 
         return (
           <Route
+            key={i}
             path={path}
             element={
               <RequireAuth>

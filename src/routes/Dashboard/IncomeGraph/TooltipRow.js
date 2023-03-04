@@ -11,7 +11,7 @@ function TooltipRow(props) {
   return (
     <div className="d-flex justify-content-between">
       <EachLegend fill={fill} label={label} />
-      <div className="pl-4">{moneyFormatter.format(_.round(value))}</div>
+      <div className="ps-4">{moneyFormatter.format(_.round(value))}</div>
     </div>
   );
 }
