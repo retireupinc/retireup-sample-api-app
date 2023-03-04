@@ -37,7 +37,9 @@ const isToolBarResetDisabled = ({ defaults, viewType, yearType }) =>
 function Toolbar(props) {
   const { toolbarOptions, setToolbarOptions } = useContext(DashboardContext);
   const { example, viewType, yearType } = toolbarOptions;
-  const currentExample = examples.find((e) => e.value === example);
+  const currentExample = examples.find((v) => v.value === example);
+  const currentViewType = viewTypeOptions.find((v) => v.value === viewType);
+  const currentYearType = yearTypeOptions.find((v) => v.value === yearType);
 
   return (
     <div className="d-flex justify-content-center">
@@ -46,6 +48,7 @@ function Toolbar(props) {
           {currentExample.name}
         </DropdownToggle>
         <DropdownMenu>
+          <DropdownItem header>Examples</DropdownItem>
           {examples.map((option, idx) => (
             <DropdownItem
               key={idx}
@@ -66,13 +69,13 @@ function Toolbar(props) {
 
       <UncontrolledDropdown className="me-1" direction="down">
         <DropdownToggle caret color="primary">
-          {currentExample.name}
+          {currentViewType.name}
         </DropdownToggle>
         <DropdownMenu>
+          <DropdownItem header>View Type</DropdownItem>
           {viewTypeOptions.map((option, idx) => (
             <DropdownItem
               key={idx}
-              eventKey={option.value}
               active={viewType === option.value}
               onClick={() => {
                 setToolbarOptions({
@@ -89,9 +92,10 @@ function Toolbar(props) {
 
       <UncontrolledDropdown className="me-1" direction="down">
         <DropdownToggle caret color="primary">
-          {currentExample.name}
+          {currentYearType.name}
         </DropdownToggle>
         <DropdownMenu>
+          <DropdownItem header>Year Type</DropdownItem>
           {yearTypeOptions.map((option, idx) => (
             <DropdownItem
               key={idx}
