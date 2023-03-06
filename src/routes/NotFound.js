@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Alert } from "react-bootstrap";
+import { Alert } from "reactstrap";
 import styled from "styled-components";
 import { authContext } from "../contexts/AuthContext";
 
@@ -13,14 +13,21 @@ function NotFound(props) {
   const { auth } = useContext(authContext);
   return (
     <StyledMainContainer>
-      <Alert variant="danger">
-        <Alert.Heading>Oh snap!</Alert.Heading>
+      <Alert color="danger">
+        <h4 className="alert-heading">Oh snap!</h4>
         <p>You got an error! The page was not found.</p>
-        {!auth?.isAuthenticated ? (
-          <Alert.Link href="/login">Click here to login</Alert.Link>
-        ) : (
-          <Alert.Link href="/">Click here to return</Alert.Link>
-        )}
+        <hr />
+        <p className="mb-0">
+          {!auth?.isAuthenticated ? (
+            <a className="alert-link" href="/login">
+              Click here to login
+            </a>
+          ) : (
+            <a className="alert-link" href="/">
+              Click here to return
+            </a>
+          )}
+        </p>
       </Alert>
     </StyledMainContainer>
   );

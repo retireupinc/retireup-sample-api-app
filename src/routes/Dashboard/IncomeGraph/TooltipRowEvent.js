@@ -29,7 +29,7 @@ function TooltipRowEvent(props) {
         label={`${owner}${initials} ${typeText(type)}`}
         letter={type.charAt(0)}
       />
-      <div className="pl-4">Age {row.age[owner]}</div>
+      <div className="ps-4">Age {row.age[owner]}</div>
     </div>
   );
 }
