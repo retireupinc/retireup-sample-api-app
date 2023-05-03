@@ -6,19 +6,15 @@ const axios = require("axios");
 const { URLSearchParams } = require("url");
 const jwt = require("jsonwebtoken");
 
-const {
-  SERVER_PORT,
-  WEBSITE_URL,
-  API_URL,
-  API_SUB,
-  API_KEY,
-  API_SECRET,
-} = process.env;
+const { SERVER_PORT, WEBSITE_URL, API_URL, API_SUB, API_KEY, API_SECRET } =
+  process.env;
 
 const app = express();
 
+app.disable("x-powered-by");
+
 // Serves static resources
-app.use(express.static(path.join(__dirname, "build")));
+app.use(express.static(path.join(__dirname, "build"), { index: "index.html" }));
 
 // Proxy API requests
 app.use(
@@ -28,11 +24,6 @@ app.use(
     changeOrigin: true,
   })
 );
-
-// Serves index.html production
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
 
 // Get access token for API requests
 app.get("/token", (req, res, next) => {
