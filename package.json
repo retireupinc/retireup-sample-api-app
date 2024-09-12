@@ -15,7 +15,7 @@
     "d3-transition": "^3.0.1",
     "dotenv-safe": "^8.2.0",
     "framer-motion": "^10.16.9",
-    "express": "^4.19.2",
+    "express": "^4.21.0",
     "http-proxy-middleware": "^3.0.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
