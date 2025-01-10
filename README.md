@@ -1,5 +1,7 @@
 # Retireup Sample API App
 
+This repo has been archived and will no longer receive updates.
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app) and uses an Express server as a proxy to the Retireup API.
 
 ## Using this project
